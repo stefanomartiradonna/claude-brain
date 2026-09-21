@@ -2,7 +2,7 @@
 
 Guida editoriale per i pezzi della rubrica su **MarkeThings** (firma "Marketing Ignorante").
 Derivata da Graza (storia n.1, apr 2026) e Poppi (storia n.2, mag 2026); terzo pezzo archiviato Poke
-House (storia n.3, lug 2026). Tutti in `System-content-flywheel/articoli/HSBG-*.md`.
+House (storia n.3, lug 2026). Tutti in `marketing-ignorante-brain/articoli/HSBG-*.md`.
 
 ---
 
@@ -251,7 +251,7 @@ rispettive lezioni · il concetto coniato · gli elementi della palette che la s
 principi del Mega Recap · hook e 3 titoli alternativi. **Non si scrive finché Stefano non approva.**
 
 **Fase C — Bozza**, salvata in
-`System-content-flywheel/articoli/HSBG-[Brand]-[Angle]-[AAAA-MM].md` con l'header di metadati usato
+`marketing-ignorante-brain/articoli/HSBG-[Brand]-[Angle]-[AAAA-MM].md` con l'header di metadati usato
 negli archivi.
 
 ## Checklist finale
