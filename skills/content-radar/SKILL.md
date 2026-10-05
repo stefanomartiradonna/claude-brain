@@ -34,9 +34,9 @@ Modificare quella, non questo workflow.
    Come etichetta di periodo secondaria usa il range di settimane ISO coperte (`Wxx–Wxx+1`).
 5. Leggi `references/watchlist.md` di questa skill: lista autori + temi + query.
 
-## Fase 1 — Radar autori (chrome-devtools-mcp)
+## Fase 1 — Radar autori (browser)
 
-**Canale browser obbligatorio: `chrome-devtools-mcp`.** Si attacca al Chrome dell'utente già aperto
+**Canale primario: `chrome-devtools-mcp`.** Si attacca al Chrome dell'utente già aperto
 e già loggato su LinkedIn (`--autoConnect`). Tool da usare, in quest'ordine:
 
 - `mcp__chrome-devtools-mcp__list_pages` — verifica che il browser risponda e vedi i tab aperti
@@ -46,10 +46,25 @@ e già loggato su LinkedIn (`--autoConnect`). Tool da usare, in quest'ordine:
 Se i tool non sono già caricati, prendili con ToolSearch:
 `select:mcp__chrome-devtools-mcp__list_pages,mcp__chrome-devtools-mcp__navigate_page,mcp__chrome-devtools-mcp__take_snapshot`
 
-**NON usare la skill `claude-in-chrome` né i tool `mcp__claude-in-chrome__*`.** È un canale diverso,
-richiede l'estensione Chrome di claude.ai che su questa macchina non è installata: la navigazione va
-in timeout dopo ~2 minuti con "Browser extension is not connected" e il run si ferma. Non è un
-problema di Chrome né del login LinkedIn. È già successo il 2026-08-03 e il 2026-08-17.
+**Fallback dichiarato: `claude-in-chrome`.** Se i tool `chrome-devtools-mcp` non sono disponibili in
+sessione (tipicamente CONNECT_TIMEOUT all'avvio, anche quando `claude mcp list` lo dà Connected),
+passa a `mcp__claude-in-chrome__*` e prosegui — non fermare il run. L'estensione di claude.ai è
+installata e funzionante su questa macchina: ha retto 7/7 autori il 2026-08-17, 2026-08-24,
+2026-09-21 e 2026-10-05. Tool equivalenti:
+
+- `mcp__claude-in-chrome__tabs_context_mcp` (con `createIfEmpty: true`) — apre il tab group e verifica il browser
+- `mcp__claude-in-chrome__navigate` — apri il profilo dell'autore
+- `mcp__claude-in-chrome__get_page_text` — leggi i post (più compatto di uno snapshot)
+- `mcp__claude-in-chrome__browser_batch` — accorpa navigate + wait + get_page_text in una chiamata
+
+ToolSearch: `select:mcp__claude-in-chrome__tabs_context_mcp,mcp__claude-in-chrome__navigate,mcp__claude-in-chrome__get_page_text,mcp__claude-in-chrome__browser_batch,mcp__claude-in-chrome__tabs_close_mcp`
+
+Note operative su questo canale: dopo `navigate` lascia ~4s di `wait` prima di leggere, altrimenti
+`get_page_text` risponde "Can't interact with browser-internal or unparseable URLs". Se un'azione
+risponde "Couldn't determine which page this action targets", richiama `tabs_context_mcp` e usa il
+tabId che restituisce (gli id cambiano se il tab group viene ricreato). Chiudi i tab che apri.
+
+Qualunque sia il canale, **dichiara nel report quale hai usato** (sezione Note di processo).
 
 Per ogni autore della watchlist:
 
@@ -139,11 +154,17 @@ Struttura fissa del Doc (in italiano):
 
 ## Troubleshooting
 
-- **"Browser extension is not connected" / "Claude browser connector":** stai usando il canale
-  sbagliato. Quel messaggio arriva da `claude-in-chrome`, non da `chrome-devtools-mcp`. Non mandare
-  l'utente a installare estensioni: passa a `mcp__chrome-devtools-mcp__list_pages` e prosegui.
-- **`chrome-devtools-mcp` non risponde davvero** (`list_pages` fallisce): verifica con
-  `claude mcp list` che risulti Connected. Se non lo è, avvisa l'utente e passa al fallback WebSearch.
+- **I tool `chrome-devtools-mcp` non esistono in sessione** (ToolSearch non li trova, o il system
+  reminder dice CONNECT_TIMEOUT): il server non si è agganciato all'avvio e in sessione non si
+  riconnette. `claude mcp list` può dirlo Connected: non contraddice niente, misura un'altra cosa.
+  Non insistere e non fermare il run: passa a `claude-in-chrome` (Fase 1). Dal 2026-10-05 il server
+  è invocato dal bin globale `chrome-devtools-mcp` invece che da `npx chrome-devtools-mcp@latest`,
+  che toglie il round-trip al registry: se il timeout si ripresenta, controlla che il bin ci sia
+  ancora (`npm ls -g --depth=0 | grep chrome`) prima di cercare altrove.
+- **`chrome-devtools-mcp` è caricato ma non risponde** (`list_pages` fallisce): verifica che Chrome
+  sia aperto. Se lo è, passa a `claude-in-chrome`; se nessuno dei due canali va, avvisa l'utente e
+  degrada a WebSearch per gli autori ("[autore] LinkedIn post [tema] last 2 weeks"), segnalandolo
+  nelle Note di processo come dato parziale.
 - **LinkedIn chiede login / blocca:** avvisa l'utente e prosegui con gli autori raggiungibili +
   WebSearch come fallback parziale ("[autore] LinkedIn post [tema] last 2 weeks").
 - **Google Drive MCP non disponibile:** salva il report come `radar/[YYYY-Wxx]-content-radar.md`
