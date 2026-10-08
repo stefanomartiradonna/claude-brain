@@ -31,9 +31,8 @@ L'output sono bozze che Stefano edita.
    - `knowledge/craft/writing_techniques.md` e `edit-patterns.md`
    - `knowledge/hypotheses/active.md`
    - `knowledge/platforms/linkedin/rules.md` e `utm-convention.md`
-   - `claude-private-refs/linkedin/voce-analisi.md` — le regole di voce ricavate dai suoi testi reali,
-     con il conteggio dei post che le sostengono. **Dove è in conflitto con regole generiche di
-     scrittura o con la skill di writing, vince questo file.**
+   - `claude-private-refs/linkedin/voce-analisi.md` — cosa Stefano fa **di fatto** nei suoi testi, con
+     il conteggio dei post che lo sostengono. È evidenza, non autorità: vedi "Dipendenze" sotto.
    - `claude-private-refs/linkedin/temi.csv` — tema e formato retorico per ogni post, serve a ogni
      analisi per tema e a ritrovare i post vecchi su un argomento
 3. Leggi `knowledge/posts/published.md` e la cartella `post-idee/` **solo per i titoli**: servono a non
@@ -186,9 +185,10 @@ Solo dopo che Stefano ha detto quali tiene.
 sostenuto, e sapere quali pezzi vecchi linkare o citare. Un consulente che si contraddice tra due post
 sullo stesso tema perde più credibilità di quanta ne guadagni con un post in più.
 
-Scrivi con la skill `linkedin-viral-post-writer` per struttura e hook, ma **`voce-analisi.md` vince
-sulle regole generiche di scrittura** e anche sulle regole della skill, dove sono in conflitto: quello
-è ricavato dai suoi testi reali, il resto è copywriting generico.
+**Scrivi invocando la skill `linkedin-viral-post-writer`**, che è l'autorità sulla voce di Stefano.
+Il cockpit non la duplica e non la sostituisce: le passa il contesto (tema, formato, pezzi vecchi da
+linkare, obiettivo gen o capture) e lascia che sia lei a dettare voce, struttura e hook. Vedi
+"Dipendenze" in fondo per l'ordine di precedenza.
 
 Per ogni pezzo consegna anche:
 
@@ -210,8 +210,13 @@ Confronta le bozze in `bozze.md` con i post che Stefano ha effettivamente pubbli
 `posts-full.md` dopo l'aggiornamento della Fase 1). Per ogni differenza, chiediti: **è una regola
 generale del suo modo di scrivere, o vale solo per quel pezzo?**
 
-Una correzione che si ripete in almeno due post diventa una regola nuova in `voce-analisi.md`, con data
-ed esempio prima/dopo. Le correzioni uniche restano fuori.
+Una correzione che si ripete in almeno due post si registra in `voce-analisi.md` con data ed esempio
+prima/dopo: quello è il file delle osservazioni e si aggiorna da solo. Le correzioni uniche restano fuori.
+
+**Poi proponi** di portarla in `~/.claude/skills/linkedin-viral-post-writer/references/mio-stile.md`,
+che è dove vive la voce canonica. Proponi, non scrivere: quella skill è di Stefano, la usa anche fuori
+da questa routine, e una regola che ci entra condiziona ogni post che scriverà, non solo quelli del
+lunedì. Il gate è suo.
 
 **Questo è il loop primario.** Dà segnale ogni singola settimana, perché Stefano edita sempre, mentre
 le previsioni di performance (loop B) su questi volumi restano spesso non leggibili. Se devi
@@ -267,3 +272,30 @@ Poi committa: il dataset e il report in `claude-private-refs`, eventuali aggiorn
 
 Cosa lo rovinerebbe: presentare ogni oscillazione come insight, produrre bozze su temi di moda che non
 agganciano i POV, e riempire le sezioni vuote per non lasciare buchi.
+
+---
+
+## Dipendenze
+
+Il cockpit **orchestra**, non riscrive. Le skill che invoca restano autonome e usabili da sole, fuori
+da questa routine, senza passare da qui.
+
+| Skill | Ruolo | Quando la usa il cockpit |
+|---|---|---|
+| `linkedin-viral-post-writer` | **Autorità sulla voce e sulla struttura dei post.** Scritta da Stefano, vive di vita propria, si usa anche da sola per un post singolo in qualsiasi momento | Fase 8, per scrivere i pezzi scelti |
+| `content-radar` | Radar autori e temi, ciclo bisettimanale autonomo | Fase 5, nelle settimane dispari |
+
+**Il cockpit non duplica mai quello che fanno.** Se una regola di scrittura serve in entrambi i posti,
+va messa nella skill di scrittura e richiamata da qui, non copiata.
+
+### Ordine di precedenza quando le fonti sono in conflitto
+
+1. **`linkedin-viral-post-writer`** — è la voce dichiarata di Stefano, le sue scelte deliberate. Vince.
+2. **`voce-analisi.md`** — è evidenza su cosa fa di fatto nei testi pubblicati. Informa, non comanda.
+3. **Regole generiche di copywriting** — perdono sempre contro le prime due.
+
+**Se 1 e 2 divergono, non risolvere da solo: segnalalo nel report.** Esempio: se la skill dice di
+chiudere con una domanda aperta e i dati mostrano che l'ha fatto in 9 post su 80, quella non è una
+regola da applicare in silenzio né da ignorare in silenzio. È una divergenza tra come Stefano pensa di
+scrivere e come scrive davvero, e deciderla è un lavoro suo, non della routine. Mettila nella sezione
+"Cosa ho imparato" e lascia che scelga.
