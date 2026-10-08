@@ -2,11 +2,12 @@
 name: content-cockpit
 description: >
   Report settimanale del lunedì per la content strategy di Stefano: misura i post LinkedIn pubblicati
-  (finestra matura 8-14 giorni), legge le conversioni da PostHog e dal log manuale, incrocia i temi in
-  trend degli autori della watchlist con i POV del sistema, e produce 3 bozze di post pronte da editare.
-  Chiude il loop imparando dai propri output passati. Usa quando l'utente dice "cockpit", "report del
-  lunedì", "lancia il cockpit", "come sono andati i post", o quando lo scheduler settimanale lo invoca.
-  NON pubblica mai niente: produce solo bozze e proposte.
+  (finestra matura 8-14 giorni), legge le conversioni da PostHog e dal log manuale, pesca i temi dalla
+  sua settimana, dagli autori della watchlist e dall'archivio, e propone un piano editoriale di 5 pezzi.
+  Si ferma, aspetta che Stefano scelga, poi scrive solo quelli, immagine inclusa. Impara dalle
+  correzioni che Stefano fa alle bozze e dalle proprie previsioni verificate. Usa quando l'utente dice
+  "cockpit", "report del lunedì", "lancia il cockpit", "come sono andati i post", o quando lo scheduler
+  settimanale lo invoca. NON pubblica mai niente: produce solo bozze e proposte.
 ---
 
 # Content Cockpit — report settimanale del lunedì
@@ -30,6 +31,11 @@ L'output sono bozze che Stefano edita.
    - `knowledge/craft/writing_techniques.md` e `edit-patterns.md`
    - `knowledge/hypotheses/active.md`
    - `knowledge/platforms/linkedin/rules.md` e `utm-convention.md`
+   - `claude-private-refs/linkedin/voce-analisi.md` — le regole di voce ricavate dai suoi testi reali,
+     con il conteggio dei post che le sostengono. **Dove è in conflitto con regole generiche di
+     scrittura o con la skill di writing, vince questo file.**
+   - `claude-private-refs/linkedin/temi.csv` — tema e formato retorico per ogni post, serve a ogni
+     analisi per tema e a ritrovare i post vecchi su un argomento
 3. Leggi `knowledge/posts/published.md` e la cartella `post-idee/` **solo per i titoli**: servono a non
    riproporre angle già usati o già in canna.
 4. Determina la data del run e le due finestre:
@@ -120,62 +126,110 @@ metà delle volte la sezione sarebbe vuota o riempita con materiale marginale.
 - **Settimana pari:** niente radar. Pesca dagli angle dell'ultimo ciclo che non sono stati usati,
   elencandoli esplicitamente come "riporto dal ciclo precedente".
 
-## Fase 6 — Temi in trend, filtrati sui POV
+## Fase 6 — I temi della settimana, da tre fonti
 
-Dagli autori e dalle conversazioni, estrai i temi che stanno girando. Poi applica il filtro che è il
-cuore del sistema: **questo serve a scalare un POV di Stefano?** Un tema che gira ma non aggancia
-`foundation/pov.md` va scartato, non incluso perché è di moda.
+Non cercare i temi solo nel mercato: il contenuto che suona autentico nasce da cosa Stefano ha fatto
+davvero. Guarda in quest'ordine.
 
-Per ogni tema trattenuto, dichiara se serve a **demand gen** (allargare il pubblico) o a **demand
-capture** (convertire chi già cerca). Stefano vuole entrambe, ma ogni singolo pezzo serve una delle due
-e il report deve dirlo, perché sono stili diversi e si misurano con KPI diversi.
+1. **La sua settimana.** Cosa ha fatto, deciso, lanciato o imparato negli ultimi 7 giorni: commit nei
+   repo, file nuovi in `articoli/`, `post-idee/`, `infografiche/`, note di engagement in
+   `client-intelligence/`, e se i connector sono disponibili anche mail e calendario. **È la fonte
+   migliore e quella che tutti saltano**, perché è l'unica che nessun concorrente può copiare.
+2. **Il mercato.** Gli autori della watchlist (Fase 5) e le conversazioni sui temi core.
+3. **L'archivio.** Post sopra la mediana pubblicati più di sei mesi fa, da aggiornare; oppure tre-cinque
+   post sullo stesso tema da fondere in un pezzo unico. Materiale già validato dai numeri, che nessuno
+   dei lettori attuali ricorda.
 
-**Nei dati i due obiettivi vanno in direzioni opposte**: il post con più reach del dataset (Como e
-Disney, 7.902 impressioni, tema consumer) ha anche uno dei peggiori engagement rate, mentre i cinque
-post più risonanti stanno tutti sotto le 300 impressioni e sono tutti B2B core. Tienine conto quando
-proponi.
+Poi applica il filtro che è il cuore del sistema: **questo serve a scalare un POV di Stefano?** Un tema
+che gira ma non aggancia `foundation/pov.md` si scarta, non si include perché è di moda.
 
-## Fase 7 — Tre bozze
+Per ogni tema trattenuto dichiara se serve a **demand gen** (allargare il pubblico) o **demand capture**
+(convertire chi già cerca). Stefano vuole entrambe, ma ogni singolo pezzo ne serve una sola, e sono
+stili diversi che si misurano con KPI diversi.
 
-Usa la skill `linkedin-viral-post-writer`, che porta voce e struttura. Il cockpit aggiunge il contesto:
-quale tema, quale pattern, perché adesso.
+**Nei dati i due obiettivi vanno in direzioni opposte**: il post con più reach (Como e Disney, 7.902
+impressioni, tema consumer) ha uno dei peggiori engagement rate, mentre i cinque post più risonanti
+stanno tutti sotto le 300 impressioni e sono tutti B2B core. Non mescolarli in un unico giudizio.
 
-Per ciascuna delle 3 bozze dichiara, prima del testo:
+## Fase 7 — Il piano, poi fermati
 
-- **Tema** e a quale POV si aggancia
+**Non scrivere ancora i post.** Proponi un piano di 5 pezzi, uno per giorno lavorativo: **2 ripresi
+dall'archivio** (fonte 3) e **3 nuovi**.
+
+Per ciascuno, in una riga di tabella più poche righe sotto:
+
+- **Giorno** e **tema**, con il POV agganciato
+- **Fonte**: il file, il commit, la mail o il link preciso da cui nasce. Un tema senza fonte tracciabile
+  è un tema inventato
 - **Obiettivo**: demand gen o demand capture
-- **Formato consigliato** (testo, immagine, carosello) e perché, con il numero che lo giustifica
-- **Pattern usato** (T01-T06 o altro) e l'evidenza nel dataset che lo supporta
-- **Link con UTM già montato** secondo `utm-convention.md`, se il pezzo porta da qualche parte
-- **Previsione**: cosa ti aspetti che faccia rispetto alla mediana, e perché
+- **Tre aperture diverse** tra cui scegliere, non una
+- **Formato** media (testo/immagine/carosello) e **formato retorico**, con il numero dell'archivio che
+  giustifica la scelta (vedi `temi.csv` e `voce-analisi.md`)
+- **Previsione**: cosa ti aspetti rispetto alla mediana, e perché
 
-Poi, alla fine, **di' quale delle tre è la più forte e perché**. Tre bozze senza una gerarchia
-spostano su Stefano il lavoro di scelta, che è esattamente il lavoro che la routine dovrebbe togliergli.
+Poi **di' quale dei cinque è il più forte e quale toglieresti**. Un piano senza gerarchia sposta su
+Stefano il lavoro di scelta, che è il lavoro che la routine dovrebbe togliergli.
 
-**Anti-ripetizione:** scarta angle già presenti in `post-idee/` o già pubblicati in `published.md`,
-a meno che non ci sia un motivo esplicito per rifarli (dato nuovo, evidenza contraria).
+**Anti-ripetizione:** scarta angle già in `post-idee/` o già pubblicati in `published.md`, a meno che
+non ci sia un motivo esplicito per rifarli (dato nuovo, evidenza contraria).
 
-## Fase 8 — Auto-miglioramento (la parte che chiude il loop)
+**Qui la routine si ferma e aspetta.** Scrivere cinque pezzi che poi ne pubblica due significa buttare
+via tre quinti del lavoro, e soprattutto togliergli il gate editoriale che nel suo sistema sta sempre
+al livello strategico, mai al copy-editing.
 
-Questa fase è ciò che distingue il cockpit da un report che si ripete uguale ogni settimana.
+## Fase 8 — Scrivere i pezzi scelti
 
-1. **Verifica le previsioni vecchie.** Recupera le previsioni fatte nei report delle settimane
-   precedenti (sono in `claude-private-refs/linkedin/cockpit/`) per i post che ora sono nella finestra
-   matura. Hanno retto? Scrivi il confronto previsto contro reale. **Una previsione sbagliata è il dato
-   più prezioso della settimana**: significa che un pattern che credevamo buono non lo è.
-2. **Aggiorna l'evidenza.** Porta quello che hai imparato in `knowledge/hypotheses/active.md`. Se
-   un'ipotesi è confermata per la terza volta, **proponi** la promozione a regola in
-   `platforms/linkedin/rules.md`. Proponi, non eseguire: la promozione la decide Stefano, come per il
-   resto del sistema.
-3. **Impara dai post che performano.** Rileggi in `posts-full.md` i post entrati nel top decile da
-   quando gira la routine, ed estrai cosa hanno in comune che i mediani non hanno: apertura, lunghezza,
-   presenza di numeri, tipo di chiusura. Se emerge un pattern nuovo, aggiungilo a
-   `craft/writing_techniques.md`; se qualcosa funziona che non dovrebbe, va nella sezione false beliefs.
-4. **Registra le previsioni di questa settimana**, così fra due settimane saranno verificabili.
+Solo dopo che Stefano ha detto quali tiene.
 
-Senza il punto 1 il sistema non impara: produce consigli che non vengono mai messi alla prova.
+**Prima di scrivere su un tema, rileggi tutti i suoi post già pubblicati su quel tema** (filtra
+`temi.csv`, poi leggi i testi in `posts-full.md`). Serve a due cose: non contraddire quello che ha già
+sostenuto, e sapere quali pezzi vecchi linkare o citare. Un consulente che si contraddice tra due post
+sullo stesso tema perde più credibilità di quanta ne guadagni con un post in più.
 
-## Fase 9 — Output
+Scrivi con la skill `linkedin-viral-post-writer` per struttura e hook, ma **`voce-analisi.md` vince
+sulle regole generiche di scrittura** e anche sulle regole della skill, dove sono in conflitto: quello
+è ricavato dai suoi testi reali, il resto è copywriting generico.
+
+Per ogni pezzo consegna anche:
+
+- **Il brief dell'immagine**: cosa mostra, il testo esatto da metterci sopra (massimo 25 parole),
+  formato 4:5. Il 70% dei suoi post porta un'immagine e finora non è mai stata specificata, quindi è
+  il pezzo di lavoro che gli resta addosso ogni volta.
+- **Il link con UTM già montato** secondo `utm-convention.md`, se il pezzo porta da qualche parte.
+
+Salva ogni bozza in `claude-private-refs/linkedin/bozze.md` con la data e il nome del pezzo. Serve alla
+Fase 9: senza la bozza salvata, il confronto con la versione pubblicata è impossibile.
+
+## Fase 9 — Auto-miglioramento (due loop, non uno)
+
+Questa fase distingue il cockpit da un report che si ripete uguale ogni settimana.
+
+### Loop A — Le mie correzioni (segnale ogni settimana)
+
+Confronta le bozze in `bozze.md` con i post che Stefano ha effettivamente pubblicato (li trovi in
+`posts-full.md` dopo l'aggiornamento della Fase 1). Per ogni differenza, chiediti: **è una regola
+generale del suo modo di scrivere, o vale solo per quel pezzo?**
+
+Una correzione che si ripete in almeno due post diventa una regola nuova in `voce-analisi.md`, con data
+ed esempio prima/dopo. Le correzioni uniche restano fuori.
+
+**Questo è il loop primario.** Dà segnale ogni singola settimana, perché Stefano edita sempre, mentre
+le previsioni di performance (loop B) su questi volumi restano spesso non leggibili. Se devi
+sacrificarne uno per tempo, sacrifica il B.
+
+### Loop B — Le mie previsioni (segnale raro ma prezioso)
+
+Recupera le previsioni dei report precedenti (in `cockpit/`) per i post ora nella finestra matura.
+Hanno retto? Scrivi previsto contro reale. **Una previsione smentita vale più di tre confermate**:
+significa che un pattern che il sistema dava per buono non regge.
+
+Porta l'evidenza in `knowledge/hypotheses/active.md`. Alla terza conferma, **proponi** la promozione a
+regola in `platforms/linkedin/rules.md`: proponi, non eseguire. La promozione la decide Stefano, come
+tutto il resto del sistema.
+
+Infine registra le previsioni di questa settimana, così fra due settimane saranno verificabili.
+
+## Fase 10 — Output
 
 Scrivi il report in `claude-private-refs/linkedin/cockpit/AAAA-MM-GG-report.md` (privato: contiene
 performance e dati di conversione).
@@ -187,9 +241,9 @@ Struttura, in quest'ordine, perché l'ordine è il messaggio:
 3. **KPI della finestra matura** + il migliore + trend contro le ultime 4 settimane
 4. **Cosa fare per migliorare i KPI**, agganciato ai numeri
 5. **Sito e conversioni** (con l'avvertenza sui volumi finché resta vera)
-6. **Previsioni verificate** della settimana scorsa
-7. **Temi in trend filtrati sui POV**, con tag gen/capture
-8. **Le 3 bozze**, con la gerarchia dichiarata
+6. **Cosa ho imparato dalle tue correzioni** (loop A) e **previsioni verificate** (loop B)
+7. **I temi della settimana**, con fonte dichiarata e tag gen/capture
+8. **Il piano dei 5 pezzi**, con la gerarchia dichiarata, poi stop
 9. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
 
 Poi committa: il dataset e il report in `claude-private-refs`, eventuali aggiornamenti di knowledge in
