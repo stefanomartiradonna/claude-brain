@@ -115,15 +115,28 @@ Ricorda la gerarchia di Stefano: DM da founder (forte) > iscritto newsletter (me
 (debole). La conversione più forte non passa da nessun sistema automatico: se il log è vuoto, dillo,
 perché un log vuoto significa che il report sta misurando solo ciò che piace, non ciò che porta lavoro.
 
-## Fase 5 — Radar autori (a settimane alterne)
+## Fase 5 — Radar autori (ogni ~2 settimane, deciso dallo stato)
 
-Il radar autori gira **ogni due settimane**, non ogni settimana. Motivo documentato in `radar/log.md`:
-Dunford è rimasta quattro cicli consecutivi senza pubblicare, Herubel due. Su finestra settimanale
-metà delle volte la sezione sarebbe vuota o riempita con materiale marginale.
+Il radar autori gira **ogni due settimane circa**, non ogni settimana. Motivo documentato in
+`radar/log.md`: Dunford è rimasta quattro cicli consecutivi senza pubblicare, Herubel due. Su finestra
+settimanale metà delle volte la sezione sarebbe vuota o riempita con materiale marginale.
 
-- **Settimana dispari (radar attivo):** esegui la skill `content-radar` per la parte autori e temi.
-- **Settimana pari:** niente radar. Pesca dagli angle dell'ultimo ciclo che non sono stati usati,
-  elencandoli esplicitamente come "riporto dal ciclo precedente".
+**Come decidere se lanciarlo, e non farlo a occhio:** leggi l'ultima riga di
+`System-content-flywheel/radar/log.md`, che riporta la data dell'ultimo ciclo.
+
+- **Se sono passati 12 giorni o più** dall'ultimo run: esegui la skill `content-radar` per la parte
+  autori e temi. Al termine il radar scrive da sé la propria riga di log.
+- **Se sono passati meno di 12 giorni:** niente radar. Pesca dagli angle dell'ultimo ciclo che non
+  sono stati usati, elencandoli esplicitamente come "riporto dal ciclo del [data]".
+
+**Non usare la parità della settimana.** Il radar ha un suo scheduler indipendente (task Windows,
+domenica alterna): se il cockpit contasse le settimane per conto proprio, i due si sfaserebbero e il
+radar girerebbe due volte in pochi giorni o resterebbe fermo per un mese senza che nessuno se ne
+accorga. Il log è l'unica fonte di verità su quando è girato davvero.
+
+**Autori in watchlist:** la lista vive in `~/.claude/skills/content-radar/references/watchlist.md`,
+non qui. Si modifica lì (Dunford, Pierri, Kaminsky, Herubel, Wester, Voje, Estner e gli altri che
+Stefano ci mette).
 
 ## Fase 6 — I temi della settimana, da tre fonti
 
