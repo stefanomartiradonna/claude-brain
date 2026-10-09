@@ -147,6 +147,27 @@ davvero. Guarda in quest'ordine.
    repo, file nuovi in `articoli/`, `post-idee/`, `infografiche/`, note di engagement in
    `client-intelligence/`, e se i connector sono disponibili anche mail e calendario. **È la fonte
    migliore e quella che tutti saltano**, perché è l'unica che nessun concorrente può copiare.
+
+   **Le call con i clienti, via Granola.** Se il connector Granola è disponibile, leggi le note delle
+   call degli ultimi 7 giorni. È il materiale più ricco che Stefano produce e l'unico davvero
+   irripetibile: quello che un founder gli ha detto martedì vale più di qualsiasi tema di tendenza.
+   Cerca tre cose precise, non un riassunto della call:
+   - **La domanda che torna.** Se due founder diversi chiedono la stessa cosa, quella è un post.
+   - **Le parole loro, non le tue.** Come chiamano il problema prima che tu gli dia il nome tecnico.
+     Vanno in `knowledge/client-intelligence/lexicon.md` (founder-speak contro vendor-speak).
+   - **Il problema dichiarato prima della diagnosi.** Il sintomo che portano è l'hook; la causa che
+     trovi tu è la tesi. È letteralmente la struttura del suo formato più usato (sintomo verso causa,
+     21 post su 80).
+
+   **Anonimizzazione obbligatoria all'ingresso, non dopo.** Mai nomi di persona, mai nomi di azienda,
+   mai dati identificabili: tieni solo ruolo, settore e scala ("founder, SaaS B2B, ~400K ARR"). Vale
+   anche nel report, che pure sta nel repo privato: se un tema poi diventa un post o finisce in
+   `knowledge/`, deve essere già anonimo da prima, perché quei file sono pubblici. Questa non è una
+   precauzione, è la regola del CLAUDE.md globale di Stefano.
+
+   **Se Granola non è disponibile o non è autorizzato, scrivilo nel report** e vai avanti con le altre
+   fonti. Non saltare la riga in silenzio: una fonte assente dichiarata è informazione, una fonte
+   assente taciuta fa credere che quella settimana non ci fossero call.
 2. **Il mercato.** Gli autori della watchlist (Fase 5) e le conversazioni sui temi core.
 3. **L'archivio.** Post sopra la mediana pubblicati più di sei mesi fa, da aggiornare; oppure tre-cinque
    post sullo stesso tema da fondere in un pezzo unico. Materiale già validato dai numeri, che nessuno
