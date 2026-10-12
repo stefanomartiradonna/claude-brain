@@ -16,7 +16,10 @@ Scopo: dire a Stefano **cosa ha funzionato, perché, e cosa scrivere adesso**, c
 Non è una dashboard: ogni sezione deve chiudersi con una decisione o con un'ammissione esplicita di
 non sapere.
 
-**Working directory attesa:** `c:\Users\Utente\Documents\System-content-flywheel`.
+**Working directory attesa:** la cartella `System-content-flywheel` indicata nel prompt del task.
+Il repo privato `claude-private-refs` le sta accanto. I percorsi cambiano da computer a computer e
+stanno solo nel prompt, mai in questa skill. Per installare la routine su un altro computer:
+`System-content-flywheel/scripts/README.md`.
 
 **Non pubblicare mai niente.** Nessun post, nessun commento, nessuna modifica su LinkedIn o sul sito.
 L'output sono bozze che Stefano edita.
@@ -50,9 +53,11 @@ misurazione, non per merito.
 1. Verifica che Chrome sia aperto e loggato su LinkedIn (`mcp__chrome-devtools-mcp__list_pages`).
 2. Apri `https://www.linkedin.com/in/stefano-martiradonna-product-marketing-manager/recent-activity/all/`
    e prendi uno snapshot. Le impressioni sono visibili **solo** da loggati come proprietario.
-3. Rilancia `claude-private-refs/linkedin/parse_snapshot.py` sullo snapshot per rigenerare
-   `metrics.csv` e `posts-full.md`.
-   Python sta in `C:\Users\Utente\AppData\Local\Programs\Python\Python312\python.exe` (`python` nudo non funziona).
+3. Lancia `claude-private-refs/linkedin/parse_snapshot.py` sullo snapshot. Lo script **unisce**:
+   aggiunge i post nuovi a `metrics.csv` e `posts-full.md`, aggiorna i numeri di quelli che ci sono
+   già e conserva i più vecchi, che lo snapshot non mostra più. Stampa quanti ne ha aggiunti,
+   aggiornati e conservati: se il totale è più basso di prima, fermati, è un errore.
+   Python: `py -3`, e se manca `python`.
 
 **Se Chrome non risponde:** dichiaralo in cima al report, lavora sul `metrics.csv` esistente, e segna
 quali sezioni sono ferme alla settimana scorsa. **Non inventare numeri e non fingere che il dato sia
@@ -329,8 +334,10 @@ Struttura, in quest'ordine, perché l'ordine è il messaggio:
 8. **Le due liste** (5 notizie tech, 5 angoli dagli autori), con i due che svilupperesti, poi stop
 9. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
 
-Poi committa: il dataset e il report in `claude-private-refs`, eventuali aggiornamenti di knowledge in
-`System-content-flywheel`. Niente push di cose non richieste.
+Poi committa e pusha `claude-private-refs` (dataset, report, bozze): è privato, ed è la copia che
+permette di ripartire da un altro computer. In `System-content-flywheel` committa e pusha gli
+aggiornamenti di knowledge solo dopo aver controllato che nel diff e nel messaggio di commit non ci
+siano nomi di clienti, di persone o loro identificativi.
 
 ---
 
