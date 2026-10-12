@@ -35,6 +35,16 @@ stats-cache.json
 mcp-needs-auth-cache.json
 .last-cleanup
 
+# Cartelle locali che un "git add -A" pubblicherebbe per sbaglio
+# scheduled-tasks: prompt dei task pianificati, possono contenere riferimenti privati
+# skills/.trash e skills/synced: copie di lavoro generate dall'app, non le skill vere
+# chrome e state: file specifici di questa macchina
+scheduled-tasks/
+skills/.trash/
+skills/synced/
+chrome/
+state/
+
 # OS e editor
 .DS_Store
 Thumbs.db

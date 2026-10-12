@@ -2,9 +2,9 @@
 name: content-cockpit
 description: >
   Report settimanale del lunedì per la content strategy di Stefano: misura i post LinkedIn pubblicati
-  (finestra matura 8-14 giorni), legge le conversioni da PostHog e dal log manuale, pesca i temi dalla
-  sua settimana, dagli autori della watchlist e dall'archivio, e propone un piano editoriale di 5 pezzi.
-  Si ferma, aspetta che Stefano scelga, poi scrive solo quelli, immagine inclusa. Impara dalle
+  (finestra matura 8-14 giorni), legge le conversioni da PostHog e dal log manuale, e chiude con due liste:
+  5 notizie tech da leggere con i suoi pillar e 5 angoli dagli autori della watchlist.
+  Si ferma, aspetta che Stefano dica cosa sviluppare, poi scrive solo quello, immagine inclusa. Impara dalle
   correzioni che Stefano fa alle bozze e dalle proprie previsioni verificate. Usa quando l'utente dice
   "cockpit", "report del lunedì", "lancia il cockpit", "come sono andati i post", o quando lo scheduler
   settimanale lo invoca. NON pubblica mai niente: produce solo bozze e proposte.
@@ -87,7 +87,7 @@ e le decisioni che ne derivano sono casuali.
 ## Fase 3 — PostHog
 
 **Il project giusto è `413969`, organizzazione "Mio Sito"** (`019e02de-86b0-0000-7808-ca885401ea7f`).
-Il default del connector è `415565` ("Sito Doc"), che contiene i dati del sito di un cliente.
+Il default del connector può essere un altro project, con i dati del sito di un cliente.
 **Chiama sempre `switch-organization` e `switch-project` prima di qualsiasi query**, poi verifica con
 una query su `properties.$host` che il dominio sia `stefanomartiradonna.com`. Se non lo è, fermati e
 segnalalo: stai leggendo il sito sbagliato.
@@ -138,10 +138,14 @@ accorga. Il log è l'unica fonte di verità su quando è girato davvero.
 non qui. Si modifica lì (Dunford, Pierri, Kaminsky, Herubel, Wester, Voje, Estner e gli altri che
 Stefano ci mette).
 
-## Fase 6 — I temi della settimana, da tre fonti
+## Fase 6 — I temi della settimana, da quattro fonti
 
-Non cercare i temi solo nel mercato: il contenuto che suona autentico nasce da cosa Stefano ha fatto
-davvero. Guarda in quest'ordine.
+Le due liste della Fase 7 si costruiscono dalle fonti 2 (autori) e 4 (mosse delle aziende). Le fonti
+1 (la sua settimana) e 3 (archivio) restano letture di contesto: servono al lessico, a non ripetere
+angoli già usati e a vedere i temi saturi. Se da una call esce un caso forte, va in una riga in coda
+alle liste e decide Stefano se farne un pezzo.
+
+Guarda in quest'ordine.
 
 1. **La sua settimana.** Cosa ha fatto, deciso, lanciato o imparato negli ultimi 7 giorni: commit nei
    repo, file nuovi in `articoli/`, `post-idee/`, `infografiche/`, note di engagement in
@@ -154,7 +158,9 @@ davvero. Guarda in quest'ordine.
    Cerca tre cose precise, non un riassunto della call:
    - **La domanda che torna.** Se due founder diversi chiedono la stessa cosa, quella è un post.
    - **Le parole loro, non le tue.** Come chiamano il problema prima che tu gli dia il nome tecnico.
-     Vanno in `knowledge/client-intelligence/lexicon.md` (founder-speak contro vendor-speak).
+     Vanno, già anonimizzate, in `claude-private-refs/client-intelligence/lexicon-da-call.md`
+     (privato). Nel lexicon pubblico (`knowledge/client-intelligence/lexicon.md`) ci passano solo
+     quando lo decide Stefano: quello che esce da una call è materiale delicato anche senza nomi.
    - **Il problema dichiarato prima della diagnosi.** Il sintomo che portano è l'hook; la causa che
      trovi tu è la tesi. È letteralmente la struttura del suo formato più usato (sintomo verso causa,
      21 post su 80).
@@ -172,6 +178,18 @@ davvero. Guarda in quest'ordine.
 3. **L'archivio.** Post sopra la mediana pubblicati più di sei mesi fa, da aggiornare; oppure tre-cinque
    post sullo stesso tema da fondere in un pezzo unico. Materiale già validato dai numeri, che nessuno
    dei lettori attuali ricorda.
+4. **Le mosse delle aziende.** Cerca sul web cosa hanno fatto le aziende negli ultimi 7-10 giorni:
+   acquisizioni, lanci, cambi di prezzo, riposizionamenti, prodotti chiusi, round. Perimetro: tech in
+   generale, senza limiti di dimensione. Anche consumer, purché il caso atterri su un pillar. Può
+   essere anche un caso più vecchio, se insegna qualcosa. Tre filtri:
+   - **Nome noto.** Il lettore deve conoscere l'azienda prima di leggere. Un nome sconosciuto entra
+     solo se agganciato a uno noto.
+   - **Spiega un pillar.** La notizia è il pretesto: ogni candidato deve servire a spiegare tesi di
+     prodotto, architettura di brand, crescita per accumulo, POV o strategia di posizionamento su un
+     caso reale. Se non si aggancia a nessuno, si scarta anche se è la notizia della settimana.
+   - **Numeri verificati.** Ogni cifra va controllata sulla fonte, primaria quando esiste (comunicato,
+     pagina ufficiale, prospetto). Se una fonte non si apre o due fonti divergono, scrivilo accanto al
+     candidato. Mai un numero preso solo dal riassunto di una ricerca senza dichiararlo.
 
 Poi applica il filtro che è il cuore del sistema: **questo serve a scalare un POV di Stefano?** Un tema
 che gira ma non aggancia `foundation/pov.md` si scarta, non si include perché è di moda.
@@ -184,31 +202,36 @@ stili diversi che si misurano con KPI diversi.
 impressioni, tema consumer) ha uno dei peggiori engagement rate, mentre i cinque post più risonanti
 stanno tutti sotto le 300 impressioni e sono tutti B2B core. Non mescolarli in un unico giudizio.
 
-## Fase 7 — Il piano, poi fermati
+## Fase 7 — Le due liste, poi fermati
 
-**Non scrivere ancora i post.** Proponi un piano di 5 pezzi, uno per giorno lavorativo: **2 ripresi
-dall'archivio** (fonte 3) e **3 nuovi**.
+**Non scrivere ancora i post.** La routine chiude con due liste di cinque voci. Stefano le legge e
+dice cosa sviluppare.
 
-Per ciascuno, in una riga di tabella più poche righe sotto:
+**Lista A: 5 notizie tech** (fonte 4). Per ciascuna, poche righe:
 
-- **Giorno** e **tema**, con il POV agganciato
-- **Fonte**: il file, il commit, la mail o il link preciso da cui nasce. Un tema senza fonte tracciabile
-  è un tema inventato
-- **Obiettivo**: demand gen o demand capture
-- **Tre aperture diverse** tra cui scegliere, non una
-- **Formato** media (testo/immagine/carosello) e **formato retorico**, con il numero dell'archivio che
-  giustifica la scelta (vedi `temi.csv` e `voce-analisi.md`)
-- **Previsione**: cosa ti aspetti rispetto alla mediana, e perché
+- **Il fatto**: cosa ha fatto l'azienda, con data e numeri, e il link alla fonte
+- **Il pillar** che serve a spiegare
+- **L'ipotesi sul mercato**: dove sta andando quel settore, in una riga, dichiarata come ipotesi
+- **La prima riga** possibile e **la domanda** da fare al lettore
+- Cosa non è verificato, se c'è
 
-Poi **di' quale dei cinque è il più forte e quale toglieresti**. Un piano senza gerarchia sposta su
+**Lista B: 5 angoli dagli autori** (fonte 2, dal ciclo del radar più recente). Per ciascuno:
+
+- **Chi e quando**: autore, data, link al post
+- **Cosa ha scritto**, in una riga
+- **L'angolo di Stefano**: dove va un passo oltre l'autore, e quale pillar aggancia
+- **La prima riga** possibile
+
+Poi **di' quali due delle dieci svilupperesti tu e perché**. Dieci voci senza gerarchia spostano su
 Stefano il lavoro di scelta, che è il lavoro che la routine dovrebbe togliergli.
 
-**Anti-ripetizione:** scarta angle già in `post-idee/` o già pubblicati in `published.md`, a meno che
-non ci sia un motivo esplicito per rifarli (dato nuovo, evidenza contraria).
+**Anti-ripetizione:** scarta angoli già in `post-idee/` o già pubblicati in `published.md`, a meno che
+non ci sia un motivo esplicito per rifarli (dato nuovo, evidenza contraria). Scarta anche gli angoli
+su un tema che Stefano ha già battuto più volte nelle ultime settimane, e scrivi quale hai scartato.
 
-**Qui la routine si ferma e aspetta.** Scrivere cinque pezzi che poi ne pubblica due significa buttare
-via tre quinti del lavoro, e soprattutto togliergli il gate editoriale che nel suo sistema sta sempre
-al livello strategico, mai al copy-editing.
+**Qui la routine si ferma e aspetta.** Scrivere pezzi che poi non pubblica significa buttare via il
+lavoro, e soprattutto togliergli il gate editoriale che nel suo sistema sta sempre al livello
+strategico, mai al copy-editing.
 
 ## Fase 8 — Scrivere i pezzi scelti
 
@@ -223,6 +246,27 @@ sullo stesso tema perde più credibilità di quanta ne guadagni con un post in p
 Il cockpit non la duplica e non la sostituisce: le passa il contesto (tema, formato, pezzi vecchi da
 linkare, obiettivo gen o capture) e lascia che sia lei a dettare voce, struttura e hook. Vedi
 "Dipendenze" in fondo per l'ordine di precedenza.
+
+**Se il pezzo viene dalla Lista A (notizia tech), la struttura è fissa, in quattro passi:**
+
+1. **Cosa hanno fatto.** Fatto, numero e nome noto nella prima riga. Poi il contesto, un dato per riga.
+2. **Dove va il mercato.** Un'ipotesi sul settore, dichiarata come ipotesi sua, appoggiata ad almeno
+   un segnale oltre alla singola notizia.
+3. **Come la vede lui.** Una lettura sola, ed è il pillar. Non un riassunto dei numeri: chi si ferma
+   ai numeri sembra informato, non esperto. Il verdetto netto è ammesso quando i fatti lo reggono.
+4. **La domanda al lettore.** Specifica, con due risposte difendibili, a cui si risponde in una riga
+   senza ammettere niente di sé. Mai un generico "che ne pensi".
+
+Più asciutto dei suoi post di metodo: frasi corte, poche idee. Modelli nel suo archivio: MEDVi
+(11/04/2026), Bending Spoons (10/06/2026), Mistral contro OpenAI (19/06/2026), e la bozza del
+12/10/2026 in `bozze.md`. In fondo alla bozza metti l'elenco delle fonti di ogni numero e le cose
+da verificare prima di pubblicare.
+
+**Se il pezzo viene dalla Lista B (angolo di un autore)**, cita l'autore e vai un passo oltre: la sua
+frase è il punto di partenza, la tesi deve essere di Stefano.
+
+Per ogni pezzo scritto registra una **previsione** (impressioni ed engagement rate attesi, e su quale
+dato dell'archivio si basa): serve al loop B della Fase 9.
 
 Per ogni pezzo consegna anche:
 
@@ -281,8 +325,8 @@ Struttura, in quest'ordine, perché l'ordine è il messaggio:
 4. **Cosa fare per migliorare i KPI**, agganciato ai numeri
 5. **Sito e conversioni** (con l'avvertenza sui volumi finché resta vera)
 6. **Cosa ho imparato dalle tue correzioni** (loop A) e **previsioni verificate** (loop B)
-7. **I temi della settimana**, con fonte dichiarata e tag gen/capture
-8. **Il piano dei 5 pezzi**, con la gerarchia dichiarata, poi stop
+7. **Il contesto della settimana**, in breve: cosa è uscito dalle call e quali temi sono saturi
+8. **Le due liste** (5 notizie tech, 5 angoli dagli autori), con i due che svilupperesti, poi stop
 9. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
 
 Poi committa: il dataset e il report in `claude-private-refs`, eventuali aggiornamenti di knowledge in
