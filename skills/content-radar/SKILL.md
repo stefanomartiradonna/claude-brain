@@ -15,8 +15,9 @@ Scopo: alimentare la produzione editoriale di Stefano (post LinkedIn + articoli 
 freschi, già tradotti in angle collegati ai SUOI core argument. Non è rassegna stampa: ogni output
 deve superare il test "questo serve a scalare un POV di Stefano?".
 
-**Working directory attesa:** il repo `System-content-flywheel`. Se non ci sei, chiedila o usa
-`c:\Users\Utente\Documents\System-content-flywheel`.
+**Working directory attesa:** il repo `System-content-flywheel`. Quando ti lancia il cockpit, è la
+cartella indicata nel suo prompt. Se non ci sei e non la conosci, chiedila: il percorso cambia da
+computer a computer e non sta scritto in questa skill.
 
 **Config:** autori e temi stanno in `references/watchlist.md` (in questa cartella skill).
 Modificare quella, non questo workflow.
@@ -136,7 +137,7 @@ Struttura fissa del Doc (in italiano):
    alla chiusura di Claude Code. Non serve fare nulla qui per rinnovarlo: il task ricorre da solo.
    **Fallback (solo se il task NON è installato):** registra con CronCreate un job **one-shot**
    (`recurring: false`) per **15 giorni dopo la data del run, alle 10:00** (cron: `0 10 [giorno] [mese] *`),
-   prompt: `Esegui la skill content-radar nella directory c:\Users\Utente\Documents\System-content-flywheel (run bisettimanale automatico).`
+   prompt: `Esegui la skill content-radar nella directory [percorso assoluto del repo System-content-flywheel su questo computer] (run bisettimanale automatico).`
    Se CronCreate non è disponibile, caricalo con ToolSearch. Nota: i cron sono session-only — valgono
    solo finché la sessione resta aperta; per questo il meccanismo primario è lo scheduled task OS.
 4. Chiudi riportando all'utente: link al Doc, i 3 angle top in una riga ciascuno, e conferma che il
