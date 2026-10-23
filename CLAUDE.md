@@ -169,6 +169,7 @@ Le skills sono in `~/.claude/skills/`. Ogni SKILL.md porta con sé la propria de
 - **okr-hybrid**: OKR con framework ibrido OKR+NCT
 - **gtm-icp-definition**: definizione e pressure-test dell'ICP dai dati clienti reali
 - **prd-writer**: PRD per feature tradizionali o AI
+- **pawel-huryn**: ponte al plugin PM Skills di Huryn (69 skill, 42 workflow). Niente in locale: legge da GitHub `stefanomartiradonna/pm-skills` (fork di phuryn/pm-skills). Si attiva solo se nomino Huryn; senza, valgono le skill sopra
 
 ### Marketing e campagne
 - **demand-gen-campaign-brief**: campaign brief completi di demand generation
