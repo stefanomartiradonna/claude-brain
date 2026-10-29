@@ -1,20 +1,27 @@
 ---
 name: content-cockpit
 description: >
-  Report settimanale del lunedì per la content strategy di Stefano: misura i post LinkedIn pubblicati
-  (finestra matura 8-14 giorni), legge le conversioni da PostHog e dal log manuale, e chiude con due liste:
-  5 notizie tech da leggere con i suoi pillar e 5 angoli dagli autori della watchlist.
-  Si ferma, aspetta che Stefano dica cosa sviluppare, poi scrive solo quello, immagine inclusa. Impara dalle
-  correzioni che Stefano fa alle bozze e dalle proprie previsioni verificate. Usa quando l'utente dice
-  "cockpit", "report del lunedì", "lancia il cockpit", "come sono andati i post", o quando lo scheduler
-  settimanale lo invoca. NON pubblica mai niente: produce solo bozze e proposte.
+  Unica routine settimanale (lunedì) della content strategy di Stefano, consegnata su Google Doc: misura
+  i post LinkedIn pubblicati (finestra matura 8-14 giorni) e ricalcola su tutto lo storico cosa funziona,
+  legge sito, conversioni e call, legge ogni settimana i post degli autori della watchlist, e chiude con
+  due liste: 5 notizie tech da leggere con i suoi pillar e fino a 5 angoli dagli autori. Si ferma, aspetta
+  che Stefano dica cosa sviluppare, poi scrive solo quello, immagine inclusa. Impara dalle correzioni alle
+  bozze, dalle previsioni verificate e da quali voci delle liste Stefano sceglie. Usa quando l'utente dice
+  "cockpit", "report del lunedì", "lancia il cockpit", "come sono andati i post", "radar", "lancia il
+  radar", "cosa hanno pubblicato gli autori", o quando lo scheduler settimanale lo invoca. Con "radar" o
+  "autori" da soli esegue solo la parte autori (Fase 5). NON pubblica mai niente: produce solo bozze e proposte.
 ---
 
-# Content Cockpit — report settimanale del lunedì
+# Content Cockpit, report settimanale del lunedì
 
 Scopo: dire a Stefano **cosa ha funzionato, perché, e cosa scrivere adesso**, con i numeri davanti.
 Non è una dashboard: ogni sezione deve chiudersi con una decisione o con un'ammissione esplicita di
 non sapere.
+
+È l'unica routine dei contenuti: fino a ottobre 2026 la lettura degli autori era una skill separata
+(`content-radar`) con un suo scheduler, un suo Doc e una finestra di 15 giorni che si sovrapponeva al
+ciclo precedente. Ora sta qui dentro, alla Fase 5, e gira ogni settimana. **Un solo report, su Google
+Doc**, che è dove Stefano lo legge.
 
 **Working directory attesa:** la cartella `System-content-flywheel` indicata nel prompt del task.
 Il repo privato `claude-private-refs` le sta accanto. I percorsi cambiano da computer a computer e
@@ -26,7 +33,7 @@ L'output sono bozze che Stefano edita.
 
 ---
 
-## Fase 0 — Contesto
+## Fase 0: Contesto
 
 1. `git pull` in `System-content-flywheel` e in `claude-private-refs`.
 2. Leggi `knowledge/INDEX.md`, poi **solo** questi file (context scoping, non caricare tutto):
@@ -38,17 +45,25 @@ L'output sono bozze che Stefano edita.
      il conteggio dei post che lo sostengono. È evidenza, non autorità: vedi "Dipendenze" sotto.
    - `claude-private-refs/linkedin/temi.csv` — tema e formato retorico per ogni post, serve a ogni
      analisi per tema e a ritrovare i post vecchi su un argomento
+   - `claude-private-refs/linkedin/cosa-funziona.md` — l'ultimo ricalcolo su tutto lo storico (Fase 1)
+   - `claude-private-refs/linkedin/scelte.csv` — le voci proposte nelle liste e quali Stefano ha tenuto
 3. Leggi `knowledge/posts/published.md` e la cartella `post-idee/` **solo per i titoli**: servono a non
    riproporre angle già usati o già in canna.
-4. Determina la data del run e le due finestre:
+4. **Rileggi le liste e la sezione autori degli ultimi due report** in `claude-private-refs/linkedin/cockpit/`.
+   Non è facoltativo: il 25/10 una stesura costruita senza rileggere il ciclo precedente aveva 3 angoli su
+   7 doppi e uno su un dato già scartato. Un angolo già proposto torna solo con un fatto nuovo, e lo dici.
+5. Determina la data del run e le finestre:
    - **Finestra matura**: post pubblicati tra 14 e 8 giorni fa. È quella che si misura.
    - **Finestra fresca**: ultimi 7 giorni. Si cita solo come anticipazione, mai per trarre conclusioni.
+   - **Finestra autori**: dal giorno dopo la data dell'ultimo report in `cockpit/` fino a oggi, al massimo
+     21 giorni. Di norma sono 7. Se un lunedì è saltato si allarga da sola e non lascia buchi; se il run è
+     manuale a metà settimana, non rilegge quello che il report di lunedì ha già letto.
 
 **Perché la finestra matura:** le impressioni LinkedIn continuano ad accumularsi per circa una
 settimana. Misurare i post di ieri premia chi ha pubblicato lunedì scorso per un artefatto di
 misurazione, non per merito.
 
-## Fase 1 — Aggiorna il dataset dei post
+## Fase 1: Aggiorna il dataset dei post
 
 1. Verifica che Chrome sia aperto e loggato su LinkedIn (`mcp__chrome-devtools-mcp__list_pages`).
 2. Apri `https://www.linkedin.com/in/stefano-martiradonna-product-marketing-manager/recent-activity/all/`
@@ -58,13 +73,31 @@ misurazione, non per merito.
    già e conserva i più vecchi, che lo snapshot non mostra più. Stampa quanti ne ha aggiunti,
    aggiornati e conservati: se il totale è più basso di prima, fermati, è un errore.
    Python: `py -3`, e se manca `python`.
+4. **Tagga i post nuovi in `temi.csv`**: una riga per ogni `activity_id` che c'è in `metrics.csv` e non lì,
+   con fino a tre tag e il formato retorico. Usa solo i tag e i formati definiti nelle sezioni 1 e 2 di
+   `voce-analisi.md`; se un post non ci sta, scegli il più vicino e segnalalo nel report invece di
+   inventare un tag nuovo. Un post fuori dalla tua rete (How Small Brands Grow, un'altra testata) o
+   cancellato va anche in `esclusi.csv`, con il motivo.
+5. **Aggiorna `scelte.csv`**:
+   - le voci del report precedente con `scelta` ancora vuota diventano `si` se Stefano le ha fatte
+     sviluppare (c'è una bozza in `bozze.md` o in `post-idee/` che le cita) e `no` altrimenti;
+   - se un post appena entrato in `metrics.csv` è nato da una voce scelta, scrivi il suo `activity_id`
+     su quella riga. Abbinalo per tema e testo, non per data: se non sei sicuro, lascia vuoto e dillo.
+6. Lancia `claude-private-refs/linkedin/cosa_funziona.py`. Ricalcola su **tutto** lo storico maturo, con
+   intervalli di confidenza, quali formati, formati retorici e temi stanno sopra o sotto la tua mediana, e
+   cosa è cambiato dal lunedì precedente. Scrive `cosa-funziona.md`, che è la base storica di tutto il
+   report. Se nel suo output compare "post maturi senza riga in temi.csv", torna al punto 4.
+
+**Perché uno script e non una lettura a occhio:** su una mediana di ~275 impressioni una settimana sola
+non dice quasi mai niente. Lo storico intero sì, ma solo se ogni lunedì si rifà lo stesso conto nello
+stesso modo. È così che la routine impara da cosa funziona senza inseguire il rumore.
 
 **Se Chrome non risponde:** dichiaralo in cima al report, lavora sul `metrics.csv` esistente, e segna
 quali sezioni sono ferme alla settimana scorsa. **Non inventare numeri e non fingere che il dato sia
-fresco.** Il log del radar è pieno di cicli degradati: un report onesto su dati vecchi vale, un report
+fresco.** Il vecchio log del radar (`radar/log.md`) è pieno di cicli degradati: un report onesto su dati vecchi vale, un report
 che finge no.
 
-## Fase 2 — KPI dei post
+## Fase 2: KPI dei post
 
 Sulla finestra matura, per ogni post: formato, tema, impressioni, reazioni, commenti, engagement rate.
 
@@ -72,8 +105,10 @@ Poi tre letture:
 
 1. **Il migliore della finestra** con i numeri, e la spiegazione del perché: quale pattern di
    `craft/writing_techniques.md` usava, quale tema, quale formato, dove stava il link.
-2. **Il confronto con la base storica**: mediana di tutto il dataset e mediana delle ultime 4 settimane.
-   I KPI stanno salendo o scendendo rispetto al tuo stesso passato, non rispetto a un benchmark esterno.
+2. **Il confronto con la base storica**: riferimento e trend li prendi da `cosa-funziona.md`, non li
+   ricalcoli a mano. I KPI stanno salendo o scendendo rispetto al tuo stesso passato, non rispetto a un
+   benchmark esterno. Il migliore della finestra lo leggi contro le tabelle di quel file: un carosello
+   sopra la mediana generale ma dentro la mediana dei caroselli si comporta come sempre, non è un merito.
 3. **Cosa fare per migliorare**: una raccomandazione per KPI che si è mosso, agganciata a un numero del
    dataset. Mai consigli generici tipo "pubblica più spesso".
 
@@ -89,7 +124,7 @@ il 50%. Scrivilo nel report, non tenerlo per te.
 Un report che spaccia ogni oscillazione per insight è peggio di nessun report: fa inseguire fantasmi
 e le decisioni che ne derivano sono casuali.
 
-## Fase 3 — PostHog
+## Fase 3: PostHog
 
 **Il project giusto è `413969`, organizzazione "Mio Sito"** (`019e02de-86b0-0000-7808-ca885401ea7f`).
 Il default del connector può essere un altro project, con i dati del sito di un cliente.
@@ -111,7 +146,7 @@ pageview e 44 visitatori in cinque mesi, contro 27.328 impressioni LinkedIn nell
 zero o una visita. Riporta i numeri grezzi, **non costruirci sopra analisi che non reggono**, e di' a
 chiare lettere quando un numero è troppo piccolo per significare qualcosa.
 
-## Fase 4 — Conversioni manuali
+## Fase 4: Conversioni manuali
 
 Leggi `claude-private-refs/linkedin/conversions.md`. Se ci sono righe nuove, prova ad agganciarle a un
 post per timing, ma **solo come ipotesi dichiarata**, mai come fatto.
@@ -120,30 +155,58 @@ Ricorda la gerarchia di Stefano: DM da founder (forte) > iscritto newsletter (me
 (debole). La conversione più forte non passa da nessun sistema automatico: se il log è vuoto, dillo,
 perché un log vuoto significa che il report sta misurando solo ciò che piace, non ciò che porta lavoro.
 
-## Fase 5 — Radar autori (ogni ~2 settimane, deciso dallo stato)
+## Fase 5: Gli autori della watchlist, ogni settimana
 
-Il radar autori gira **ogni due settimane circa**, non ogni settimana. Motivo documentato in
-`radar/log.md`: Dunford è rimasta quattro cicli consecutivi senza pubblicare, Herubel due. Su finestra
-settimanale metà delle volte la sezione sarebbe vuota o riempita con materiale marginale.
+Autori e temi stanno in `references/watchlist.md` di questa skill: si cambiano lì, non qui.
+La finestra è quella autori della Fase 0 (di norma 7 giorni). Con "radar" o "autori" da soli, fuori dal
+lunedì, si esegue solo questa fase più la Lista B, e il report va comunque su Doc (Fase 10).
 
-**Come decidere se lanciarlo, e non farlo a occhio:** leggi l'ultima riga di
-`System-content-flywheel/radar/log.md`, che riporta la data dell'ultimo ciclo.
+### Canale: il browser di Stefano
 
-- **Se sono passati 12 giorni o più** dall'ultimo run: esegui la skill `content-radar` per la parte
-  autori e temi. Al termine il radar scrive da sé la propria riga di log.
-- **Se sono passati meno di 12 giorni:** niente radar. Pesca dagli angle dell'ultimo ciclo che non
-  sono stati usati, elencandoli esplicitamente come "riporto dal ciclo del [data]".
+**Primario: `chrome-devtools-mcp`**, che si attacca al Chrome già aperto e loggato su LinkedIn.
+`list_pages` per verificare che risponda, `navigate_page` sul profilo, `take_snapshot` per leggere i post.
+Se non sono caricati: ToolSearch
+`select:mcp__chrome-devtools-mcp__list_pages,mcp__chrome-devtools-mcp__navigate_page,mcp__chrome-devtools-mcp__take_snapshot`.
 
-**Non usare la parità della settimana.** Il radar ha un suo scheduler indipendente (task Windows,
-domenica alterna): se il cockpit contasse le settimane per conto proprio, i due si sfaserebbero e il
-radar girerebbe due volte in pochi giorni o resterebbe fermo per un mese senza che nessuno se ne
-accorga. Il log è l'unica fonte di verità su quando è girato davvero.
+**Fallback: `claude-in-chrome`**, quando `chrome-devtools-mcp` manca in sessione (CONNECT_TIMEOUT
+all'avvio, anche se `claude mcp list` lo dà Connected) o `list_pages` non risponde entro 120 secondi. Ha
+retto 7 autori su 7 in tutti i cicli in cui è servito. `tabs_context_mcp` (con `createIfEmpty: true`),
+`navigate`, poi circa 4 secondi di attesa prima di `get_page_text`, oppure tutto in un `browser_batch`.
+Se un'azione risponde "Couldn't determine which page this action targets", richiama `tabs_context_mcp` e
+usa il tabId che restituisce. Chiudi i tab che apri. ToolSearch:
+`select:mcp__claude-in-chrome__tabs_context_mcp,mcp__claude-in-chrome__navigate,mcp__claude-in-chrome__get_page_text,mcp__claude-in-chrome__browser_batch,mcp__claude-in-chrome__tabs_close_mcp`.
 
-**Autori in watchlist:** la lista vive in `~/.claude/skills/content-radar/references/watchlist.md`,
-non qui. Si modifica lì (Dunford, Pierri, Kaminsky, Herubel, Wester, Voje, Estner e gli altri che
-Stefano ci mette).
+**Se nessuno dei due va**, o LinkedIn chiede il login: ricerca web per autore ("[autore] LinkedIn post
+[tema]") e dichiaralo in cima al report come dato parziale. Mai fermare il run per un profilo.
 
-## Fase 6 — I temi della settimana, da quattro fonti
+Scrivi nel report quale canale hai usato.
+
+### Cosa leggere
+
+Per ogni autore apri `[URL profilo]recent-activity/all/` e prendi i post della finestra: hook, corpo se
+serve, formato, tema, reazioni e commenti se visibili.
+
+- Al massimo 3-4 post rilevanti per autore. Salta i repost senza commento, i "commenta per ricevere" e
+  i post solo promozionali.
+- Se un autore non ha pubblicato nella finestra, scrivilo e passa oltre. Dunford è rimasta senza post in
+  6 cicli su 8: è normale, non va riempito.
+- Se un profilo non carica, annotalo e vai avanti.
+
+Poi i **temi core** della watchlist: una ricerca per tema sugli ultimi 7-10 giorni (newsletter di
+settore, report con dati, dibattiti). Scarta quello che potrebbe interessare qualsiasi marketer: non è
+un segnale, è rumore.
+
+### Il filtro
+
+Ogni segnale che resta deve dichiarare quale POV di `pov.md` fa scalare e quale trigger del buyer di
+`audience.md` aggancia. Se non scala nessun POV, si scarta o finisce al massimo tra i segnali per la
+knowledge (Fase 10). Il confronto con gli ultimi due report (Fase 0) si fa qui: un angolo già proposto
+torna solo con un fatto nuovo.
+
+La Fase 5 **non modifica** `knowledge/references/`, `hypotheses/` o `foundation/`: propone candidati,
+la promozione la decide Stefano.
+
+## Fase 6: I temi della settimana, da quattro fonti
 
 Le due liste della Fase 7 si costruiscono dalle fonti 2 (autori) e 4 (mosse delle aziende). Le fonti
 1 (la sua settimana) e 3 (archivio) restano letture di contesto: servono al lessico, a non ripetere
@@ -179,7 +242,7 @@ Guarda in quest'ordine.
    **Se Granola non è disponibile o non è autorizzato, scrivilo nel report** e vai avanti con le altre
    fonti. Non saltare la riga in silenzio: una fonte assente dichiarata è informazione, una fonte
    assente taciuta fa credere che quella settimana non ci fossero call.
-2. **Il mercato.** Gli autori della watchlist (Fase 5) e le conversazioni sui temi core.
+2. **Il mercato.** Quello che hai letto alla Fase 5: autori della watchlist e temi core.
 3. **L'archivio.** Post sopra la mediana pubblicati più di sei mesi fa, da aggiornare; oppure tre-cinque
    post sullo stesso tema da fondere in un pezzo unico. Materiale già validato dai numeri, che nessuno
    dei lettori attuali ricorda.
@@ -207,10 +270,16 @@ stili diversi che si misurano con KPI diversi.
 impressioni, tema consumer) ha uno dei peggiori engagement rate, mentre i cinque post più risonanti
 stanno tutti sotto le 300 impressioni e sono tutti B2B core. Non mescolarli in un unico giudizio.
 
-## Fase 7 — Le due liste, poi fermati
+## Fase 7: Le due liste, poi fermati
 
-**Non scrivere ancora i post.** La routine chiude con due liste di cinque voci. Stefano le legge e
-dice cosa sviluppare.
+**Non scrivere ancora i post.** La routine chiude con due liste. Stefano le legge e dice cosa
+sviluppare.
+
+**L'ordine dentro ogni lista lo decide anche `scelte.csv`.** Prima dei pesi, vale il filtro della Fase 6.
+Poi, a parità di forza, metti in alto le fonti e i pillar che Stefano sceglie più spesso, e scrivi in
+una riga perché una voce sta dov'è quando l'ordine viene dalle scelte passate. Non escludere un pillar
+perché è stato scartato: servono anche i pillar che non ha ancora coperto, e la ragione del rifiuto
+spesso era la notizia, non il tema.
 
 **Lista A: 5 notizie tech** (fonte 4). Per ciascuna, poche righe:
 
@@ -220,15 +289,24 @@ dice cosa sviluppare.
 - **La prima riga** possibile e **la domanda** da fare al lettore
 - Cosa non è verificato, se c'è
 
-**Lista B: 5 angoli dagli autori** (fonte 2, dal ciclo del radar più recente). Per ciascuno:
+**Lista B: fino a 5 angoli dagli autori** (fonte 2, dalla Fase 5 di questo run). Per ciascuno:
 
 - **Chi e quando**: autore, data, link al post
 - **Cosa ha scritto**, in una riga
 - **L'angolo di Stefano**: dove va un passo oltre l'autore, e quale pillar aggancia
 - **La prima riga** possibile
 
-Poi **di' quali due delle dieci svilupperesti tu e perché**. Dieci voci senza gerarchia spostano su
-Stefano il lavoro di scelta, che è il lavoro che la routine dovrebbe togliergli.
+**Fino a 5, non 5 per forza.** In una settimana magra gli angoli buoni possono essere tre: scrivi quanti
+sono e perché, non riempire con materiale debole. Una voce mediocre in lista costa a Stefano più tempo
+di quanto ne faccia risparmiare.
+
+Poi **di' quali due svilupperesti tu e perché**. Dieci voci senza gerarchia spostano su Stefano il
+lavoro di scelta, che è il lavoro che la routine dovrebbe togliergli.
+
+**Registra ogni voce in `scelte.csv`** prima di fermarti: `data_report`, `voce` (A1, B3...), `lista`,
+`fonte` (l'azienda per la Lista A, l'autore per la B), `pillar` (il codice di `pov.md`, es. A1, C1),
+`obiettivo` (`gen` o `capture`), `scelta` vuota, `activity_id` vuoto. Quando Stefano dice cosa tiene,
+nella stessa sessione, metti `si` su quelle e `no` sulle altre.
 
 **Anti-ripetizione:** scarta angoli già in `post-idee/` o già pubblicati in `published.md`, a meno che
 non ci sia un motivo esplicito per rifarli (dato nuovo, evidenza contraria). Scarta anche gli angoli
@@ -238,7 +316,7 @@ su un tema che Stefano ha già battuto più volte nelle ultime settimane, e scri
 lavoro, e soprattutto togliergli il gate editoriale che nel suo sistema sta sempre al livello
 strategico, mai al copy-editing.
 
-## Fase 8 — Scrivere i pezzi scelti
+## Fase 8: Scrivere i pezzi scelti
 
 Solo dopo che Stefano ha detto quali tiene.
 
@@ -283,7 +361,7 @@ Per ogni pezzo consegna anche:
 Salva ogni bozza in `claude-private-refs/linkedin/bozze.md` con la data e il nome del pezzo. Serve alla
 Fase 9: senza la bozza salvata, il confronto con la versione pubblicata è impossibile.
 
-## Fase 9 — Auto-miglioramento (due loop, non uno)
+## Fase 9: Auto-miglioramento (tre loop)
 
 Questa fase distingue il cockpit da un report che si ripete uguale ogni settimana.
 
@@ -315,29 +393,69 @@ Porta l'evidenza in `knowledge/hypotheses/active.md`. Alla terza conferma, **pro
 regola in `platforms/linkedin/rules.md`: proponi, non eseguire. La promozione la decide Stefano, come
 tutto il resto del sistema.
 
+Le previsioni partono da `cosa-funziona.md`: la mediana del gruppo a cui il pezzo appartiene (formato,
+formato retorico, tema), non la mediana generale. Se la sezione "Cosa è cambiato" di quel file mostra un
+verdetto che si è spostato, dillo nel report: è la routine che cambia idea su un pattern, ed è
+esattamente l'informazione che Stefano deve vedere.
+
 Infine registra le previsioni di questa settimana, così fra due settimane saranno verificabili.
 
-## Fase 10 — Output
+### Loop C — Le tue scelte sulle liste (segnale ogni settimana)
 
-Scrivi il report in `claude-private-refs/linkedin/cockpit/AAAA-MM-GG-report.md` (privato: contiene
-performance e dati di conversione).
+Ogni lunedì Stefano tiene due voci su dieci e scarta le altre. Dice quali fonti, pillar e obiettivi gli
+servono davvero, ed è un segnale pulito, che non dipende dai volumi di LinkedIn. Sta in `scelte.csv`, e
+`cosa-funziona.md` lo riassume per lista, fonte e pillar.
+
+- **Nel report**: una riga su cosa dicono le scelte finora, con il numero di settimane su cui si regge.
+  Prima di quattro settimane di dati, scrivi solo i conteggi, senza trarne una tendenza.
+- **Watchlist**: un autore con almeno sei voci proposte e nessuna scelta in otto settimane, oppure senza
+  segnale utile per otto settimane, va **proposto** per l'uscita, con i numeri. Proponi anche chi
+  entrerebbe, se negli stessi report un nome fuori lista è tornato più volte. Non modificare la watchlist
+  da solo: chi legge Stefano lo decide lui.
+- **Quando i numeri e le scelte divergono**, dillo. Se Stefano sceglie sempre un pillar che poi fa
+  sotto la mediana, o scarta sempre quello che va meglio, non è una cosa da correggere in silenzio: è
+  una decisione sua, tra quello che vuole dire e quello che funziona.
+
+## Fase 10: Output, su Google Doc
+
+Il report si legge **su Google Doc**. Il file .md nel repo privato resta come archivio, perché il loop B
+rilegge le previsioni dei report vecchi e i Doc non stanno nel repo.
+
+1. Scrivi il report in `claude-private-refs/linkedin/cockpit/AAAA-MM-GG-report.md` (privato: contiene
+   performance e dati di conversione).
+2. Caricalo su Drive come Google Doc: `mcp__claude_ai_Google_Drive__create_file` con `textContent` = il
+   markdown del report, `contentMimeType` = `text/markdown` e `title` = `Content Cockpit AAAA-MM-GG`.
+   Drive converte il markdown: titoli, grassetti, link, elenchi e tabelle arrivano formattati (verificato
+   il 29/10/2026). Cartella: `Content Cockpit` nella root di Drive. Cercala con `search_files`
+   (`title = 'Content Cockpit' and mimeType = 'application/vnd.google-apps.folder'`) e passa il suo id
+   come `parentId`; se non c'è, creala.
+3. Rileggi il Doc con `read_file_content` e controlla che ci sia il testo intero: se arriva vuoto o
+   troncato, rifai il caricamento, e se fallisce ancora dillo nella risposta finale invece di dare il link.
+4. Scrivi il link del Doc nella seconda riga del file .md, così report e Doc restano collegati.
 
 Struttura, in quest'ordine, perché l'ordine è il messaggio:
 
 1. **Una riga di verdetto**: la cosa che Stefano deve sapere se legge solo la prima riga
-2. **Stato dei dati**: cosa è fresco, cosa è degradato, cosa manca
-3. **KPI della finestra matura** + il migliore + trend contro le ultime 4 settimane
+2. **Stato dei dati**: cosa è fresco, cosa è degradato, cosa manca, e quale canale ha letto gli autori
+3. **KPI della finestra matura** + il migliore + trend, da `cosa-funziona.md`
 4. **Cosa fare per migliorare i KPI**, agganciato ai numeri
 5. **Sito e conversioni** (con l'avvertenza sui volumi finché resta vera)
-6. **Cosa ho imparato dalle tue correzioni** (loop A) e **previsioni verificate** (loop B)
+6. **Cosa ho imparato**: dalle tue correzioni (loop A), dalle previsioni (loop B), dalle tue scelte
+   (loop C), e quali verdetti di `cosa-funziona.md` sono cambiati
 7. **Il contesto della settimana**, in breve: cosa è uscito dalle call e quali temi sono saturi
-8. **Le due liste** (5 notizie tech, 5 angoli dagli autori), con i due che svilupperesti, poi stop
-9. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
+8. **Cosa hanno scritto gli autori**: per autore, i temi della finestra e il post più notevole con il
+   perché, oppure "niente nella finestra". Poi i segnali dai temi core, con la fonte.
+9. **Le due liste** (5 notizie tech, fino a 5 angoli dagli autori), con i due che svilupperesti, poi stop
+10. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
+11. **Segnali per la knowledge**: solo candidati, nessun file modificato. Formato "CANDIDATO: [cosa] →
+    [dove andrebbe] → [perché]". Decide Stefano.
 
-Poi committa e pusha `claude-private-refs` (dataset, report, bozze): è privato, ed è la copia che
-permette di ripartire da un altro computer. In `System-content-flywheel` committa e pusha gli
-aggiornamenti di knowledge solo dopo aver controllato che nel diff e nel messaggio di commit non ci
-siano nomi di clienti, di persone o loro identificativi.
+Poi committa e pusha `claude-private-refs` (dataset, report, bozze, `scelte.csv`, `cosa-funziona.*`): è
+privato, ed è la copia che permette di ripartire da un altro computer. In `System-content-flywheel`
+committa e pusha gli aggiornamenti di knowledge solo dopo aver controllato che nel diff e nel messaggio
+di commit non ci siano nomi di clienti, di persone o loro identificativi.
+
+Chiudi la risposta in chat con il link al Doc e il verdetto in una riga.
 
 ---
 
@@ -362,16 +480,17 @@ agganciano i POV, e riempire le sezioni vuote per non lasciare buchi.
 
 ## Dipendenze
 
-Il cockpit **orchestra**, non riscrive. Le skill che invoca restano autonome e usabili da sole, fuori
-da questa routine, senza passare da qui.
+Il cockpit **orchestra** la scrittura, non la riscrive. La skill che invoca resta autonoma e usabile da
+sola, fuori da questa routine.
 
-| Skill | Ruolo | Quando la usa il cockpit |
+| Skill o file | Ruolo | Quando lo usa il cockpit |
 |---|---|---|
 | `linkedin-viral-post-writer` | **Autorità sulla voce e sulla struttura dei post.** Scritta da Stefano, vive di vita propria, si usa anche da sola per un post singolo in qualsiasi momento | Fase 8, per scrivere i pezzi scelti |
-| `content-radar` | Radar autori e temi, ciclo bisettimanale autonomo | Fase 5, nelle settimane dispari |
+| `references/watchlist.md` | Autori e temi da leggere | Fase 5 |
+| `claude-private-refs/linkedin/cosa_funziona.py` | Ricalcolo settimanale di cosa funziona su tutto lo storico | Fase 1, poi letto in Fasi 2, 7 e 9 |
 
-**Il cockpit non duplica mai quello che fanno.** Se una regola di scrittura serve in entrambi i posti,
-va messa nella skill di scrittura e richiamata da qui, non copiata.
+**Il cockpit non duplica mai la skill di scrittura.** Se una regola di scrittura serve in entrambi i
+posti, va messa nella skill di scrittura e richiamata da qui, non copiata.
 
 ### Ordine di precedenza quando le fonti sono in conflitto
 
