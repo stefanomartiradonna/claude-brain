@@ -1,6 +1,6 @@
 ---
 name: gtm-icp-definition
-description: "Build or pressure-test your Ideal Customer Profile from actual customer data. Use when defining ICP from scratch, validating an existing one, or sharpening targeting that has drifted. Covers market energy segments (M1/M2/M3), ECP vs ICP distinction, firmographic and deep-dive segmentation, winning indicators, buying triggers, buying committee, negative ICP, and operationalization."
+description: "Build or pressure-test your Ideal Customer Profile from actual customer data. Use when defining ICP from scratch, validating an existing one, or sharpening targeting that has drifted. Covers market energy segments (M1/M2/M3), ECP vs ICP distinction, firmographic and deep-dive segmentation, winning indicators, buying triggers, buying committee, negative ICP, voice of customer, proof points, data gaps, and operationalization."
 ---
 
 # GTM ICP Definition
@@ -18,6 +18,11 @@ This skill walks you through building an Ideal Customer Profile from scratch or 
 - What you sell — product/service, core use case, the problem you solve.
 - Your stage — pre-product-market-fit, early traction, scaling, or mature? ICP definition looks different at each stage.
 
+Recommended, if available:
+- The outside-in ICP draft produced by the `setup` skill (`clients/[nome]/context/icp-definition.md`): customer evidence table, candidate segments with counts, public proof points, sources. Use it as the starting evidence base, then correct it with internal data. It describes who the company chooses to show, not necessarily who buys best.
+- Interview notes or call transcripts (discovery, sales, CS). They are the primary source for voice of customer.
+- A CRM export. Strip person names and emails before sharing it.
+
 Without this, the output is a generic ICP template. With it, the agent builds a profile calibrated to your actual customer reality — not assumptions about who should buy.
 
 ---
@@ -25,6 +30,8 @@ Without this, the output is a generic ICP template. With it, the agent builds a 
 ## What This Skill Produces
 
 A documented ICP with market energy segment (M1/M2/M3), firmographic criteria, situational criteria, buying triggers, buying committee roles, explicit disqualifiers, observable signals, and a confidence level — in a format every revenue team member can use and reference quickly.
+
+It also produces the material downstream skills need to write: voice of customer in the buyers' own words, customer proof points with sources, data gaps, and a source list. Every claim in the output can be traced to a customer record, an interview, or a URL.
 
 ---
 
@@ -146,6 +153,8 @@ For each current or past customer, collect:
 - Health score or NPS if available
 - Why they churned (if applicable)
 
+Put this in a customer evidence table, one row per customer. Then normalize the attributes into consistent bands (e.g., headcount 1-10 / 11-50 / 51-200 / 201-1000 / 1000+; one industry taxonomy; one region scheme) so they can be counted. Without bands, pattern recognition in Step 4 becomes impression, not counting.
+
 Sort into three tiers:
 
 **Tier A — Best customers.** Bought fast, adopted fully, expanded, refer others, easy to support, clearly get value.
@@ -241,6 +250,8 @@ Map each segment from the first and second pass against these indicators. The se
 
 Look for 3-5 attributes that appear in 80%+ of Tier A customers. Those are your ICP criteria. Attributes that appear in less than half are nice-to-haves, not requirements.
 
+**Show the count behind every pattern.** Write "7 of 9 Tier A customers", not "most customers". A segment needs several customers behind it: one big logo is not a segment. If the sample is small, say so once in the confidence section and point to it, instead of repeating the caveat in every section.
+
 ---
 
 ### Step 5 — Identify the Negative ICP
@@ -314,9 +325,35 @@ For each role, document:
 
 The buying committee structure should reflect your Tier A customer reality — not org chart theory. If the CFO never shows up in your deals, do not build a CFO strategy.
 
+The champion and the economic buyer must read differently: different pains, different objections, different success measures. If the two profiles are interchangeable, you have described one person twice, and the messaging built on top will miss one of them.
+
+Build roles from evidence (deals, interviews, quoted roles in case studies), never from imagination. "Marketing Mary, 34, loves podcasts" is not a buying committee role.
+
 ---
 
-### Step 8 — Pressure-Test the ICP
+### Step 8: Capture Voice of Customer and Proof Points
+
+The ICP tells you who to target. Voice of customer and proof points tell you what to say to them and how to make it credible. Collect both here, from the same evidence base.
+
+**Voice of customer.** Exact phrases customers use for:
+- The problem, before they bought (how they describe the pain)
+- The trigger (what made them act now)
+- The outcome (what changed, in their words)
+- The alternative they left (what they were doing before)
+
+Rules:
+- Quote verbatim. Do not paraphrase, do not merge two quotes into one.
+- Attribute each quote to a role and segment (e.g., "Head of Ops, Tier A, 51-200"), not to a person's name unless it is already public.
+- Source priority: interviews and call transcripts first, sales and CS notes second, public testimonials and reviews last. Public testimonials are marketing-edited text: use them only when nothing better exists, and label them as such.
+- Group quotes by segment and by buying committee role. Recurring phrases across customers are messaging candidates.
+
+**Proof points.** For each customer you can reference: company, segment, the outcome they reported (with the number, if there is one), and the source (URL, or "internal data, not public"). Mark which ones are public and usable in outbound, decks and the website, and which ones are internal only.
+
+Only customers that are public or that come from data the user provided. Never invent a customer or an outcome.
+
+---
+
+### Step 9 — Pressure-Test the ICP
 
 Before committing to the ICP, validate it.
 
@@ -334,9 +371,14 @@ Try to build a prospect list using only your ICP criteria. Can you find 50-100 c
 
 ---
 
-### Step 9 — Document the ICP
+### Step 10 — Document the ICP
 
 Write it up in a form every revenue team member can use and reference quickly.
+
+    TLDR (3 lines): who the ICP is, the primary trigger, the confidence level.
+
+    OPEN QUESTIONS
+    What the user or client must answer to raise confidence (short list).
 
     PROFILE NAME: [[a name your team will use in conversation, e.g., "Mid-market SaaS scaler"]]
 
@@ -370,10 +412,24 @@ Write it up in a form every revenue team member can use and reference quickly.
     How you identify that a company fits the ICP and the trigger has fired —
     what you can actually see from the outside:
 
+    VOICE OF CUSTOMER
+    Verbatim quotes, by segment and role: problem / trigger / outcome / alternative left.
+    Source type for each (interview, call, CS note, public testimonial).
+
+    PROOF POINTS
+    Customer, segment, outcome, source. Public or internal only.
+
     CONFIDENCE LEVEL
     [ ] Low — fewer than 5 Tier A customers. ICP is a hypothesis.
     [ ] Medium — 5-15 Tier A customers. Directionally right, some gaps remain.
     [ ] High — 15+ Tier A customers. Validated pattern.
+    Small-sample caveat, stated once here.
+
+    DATA GAPS
+    What is missing and what would fill it (interviews, CRM fields, win-loss, churn data).
+
+    SOURCES
+    Customer records, interviews, URLs with access date. Confidence per source (high / medium / estimate).
 
     LAST UPDATED: [[date]]
     NEXT REVIEW: [[date — 6 months out, or sooner if major product/market change]]
@@ -381,7 +437,7 @@ Write it up in a form every revenue team member can use and reference quickly.
 
 ---
 
-### Step 10 — Turn the ICP Into a Working System
+### Step 11 — Turn the ICP Into a Working System
 
 An ICP document that lives in a folder is worthless. It needs to be operationalized.
 
@@ -413,6 +469,25 @@ Operationalize one new segment at a time. Each new segment requires its own mess
 
 ---
 
+## Quality Check: Before Delivering
+
+What good looks like:
+- Every customer named is public or came from the user's own data.
+- Every pattern shows its count ("6 of 14").
+- Quotes are verbatim and attributed to a role.
+- The champion and the economic buyer have different pains and different success measures.
+- The negative ICP excludes real companies someone on the team might chase, not abstract categories.
+- The confidence level matches the evidence: mostly internal data and interviews can score Medium or High, mostly public evidence and estimates stays Low.
+
+Mistakes to avoid:
+- Inventing customer names, outcomes, or composite quotes.
+- Personas built from imagination instead of deals and interviews.
+- Calling one big logo a segment.
+- Treating public case studies as a representative sample: they show the happy customers the company chose to show, which are often ECPs.
+- Repeating the same caveat in every section. Say it once and point to it.
+
+---
+
 ## Quick Reference — ICP Cheatsheet
 
 | Layer | What to Define | Source |
@@ -425,6 +500,8 @@ Operationalize one new segment at a time. Each new segment requires its own mess
 | Deep-dive | Vertical-specific criteria, use case, user persona, pain point | Product analytics + sales calls + CS |
 | Winning Indicators | Product usage, commercial health, strategic alignment, customer success metrics | Cross-functional data (product, sales, CS, finance) |
 | Negative | Hard disqualifiers, bad-fit patterns | Churn analysis + Tier C customers |
+| Voice of Customer | Verbatim phrases for problem, trigger, outcome, alternative | Interviews + calls first, public testimonials last |
+| Proof Points | Customer, outcome, source, public or internal | Customer data + public case studies |
 
 | Confidence Level | Tier A Sample | What It Means |
 |-----------------|--------------|---------------|
@@ -443,6 +520,7 @@ Operationalize one new segment at a time. Each new segment requires its own mess
 
 ## Relationship to Other Skills
 
+setup (collective repo)    →  optional input: outside-in ICP draft from public evidence, before kick-off
 gtm-icp-definition         →  run first. Everything downstream depends on this.
 gtm-prospecting            →  uses ICP firmographics + triggers to build targeted lists
 gtm-qualification-scoring  →  uses ICP criteria as the Fit dimension (Dimension 1)
