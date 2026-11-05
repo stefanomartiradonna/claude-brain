@@ -161,6 +161,7 @@ Le skills sono in `~/.claude/skills/`. Ogni SKILL.md porta con sé la propria de
 - **account-research**: brief su un prospect prima dell'outreach
 - **icp-scoring**: tier A/B/C su una lista di account
 - **signal-to-sequence**: da un segnale a una sequenza outbound completa
+- **winn-loss**: perché si vincono, perdono o vanno in churn i deal, dalle trascrizioni delle call. Sei dimensioni + quattro forze di Moesta, citazioni verbatim con frequenza. Alimenta gtm-icp-definition, positioning e messaging
 
 ### Strategia e prodotto
 - **strategic-advisor**: sparring di business strategy per startup (Patel, Martin)
