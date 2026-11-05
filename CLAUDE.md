@@ -152,6 +152,7 @@ Le skills sono in `~/.claude/skills/`. Ogni SKILL.md porta con sé la propria de
 - **b2b-h1-writer**: H1 della homepage con formula Fletch. Catena: b2b-positioning-diagnostic → b2b-h1-writer → saas-homepage-analyzer
 - **saas-homepage-analyzer**: creare o analizzare homepage B2B SaaS
 - **pricing-teardown**: audit di conversione della pricing page, skill sorella della precedente
+- **competitor-map-tittarelli**: dossier su un competitor in 13 dimensioni fisse, livello di minaccia, refresh nel tempo, landscape con 2+ dossier. Variante software e servizi. Catena: winn-loss dà il set di competitor → questa → deep-research-gtm (collettivo) solo sui primary
 
 ### Vendita e commerciale
 - **sales-deck-creator**: sales deck pronti per Gamma

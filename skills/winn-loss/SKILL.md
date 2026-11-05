@@ -20,7 +20,7 @@ Don't use it for one-off meeting notes, for researching competitors from the out
 
 **Required:** transcripts, each with the customer (or a code name) and the outcome: win, loss, retention or churn. If the outcome isn't given, ask. Only infer it when the call itself states it.
 
-**Optional:** deal size and stage, competitor names to watch for, context/icp/ and context/competitors/ for cross-referencing.
+**Optional:** deal size and stage, competitor names to watch for, context/icp/ and context/competitors/ (dossiers from competitor-map-tittarelli) for cross-referencing. Competitors that show up in deals feed back into competitor-map-tittarelli: they set its competitor list and back its "primary" threat level.
 
 **Paths.** Write to `context/win-loss/MMYY-win-loss.md`. Keep a short `context/win-loss/win-loss-strategy.md` across runs: decisions made, definitions agreed, things to stop doing. Read it first on every run. Agency or consultant? Swap `context/` for `clients/<client>/context/` throughout.
 
