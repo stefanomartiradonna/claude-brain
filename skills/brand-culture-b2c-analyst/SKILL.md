@@ -1,6 +1,6 @@
 ---
 name: brand-culture-b2c-analyst
-description: Analizza brand, campagne, prodotti e trend B2C attraverso i framework di Ana Andjelic e Jasmine Bina. Prima analisi strutturata, poi sparring interattivo.
+description: Analizza brand, campagne, prodotti e trend B2C attraverso i framework di Ana Andjelic e Jasmine Bina. Prima analisi strutturata, poi sparring interattivo. Ha una seconda modalità (Lettura del presente e narrazione) che, partendo dal corpus di articoli di Bina, trova segnali, legge il presente, anticipa comportamenti e costruisce narrazioni di brand; legge per intero gli articoli rilevanti prima di rispondere.
 trigger:
   - "analizza questo brand"
   - "analizza questa campagna"
@@ -14,6 +14,13 @@ trigger:
   - "fai una analisi alla Jasmine Bina"
   - "fai un'analisi alla Ana Andjelic"
   - "fai un'analisi alla Jasmine Bina"
+  - "leggi il presente"
+  - "dove sta andando il desiderio"
+  - "anticipa i comportamenti"
+  - "trend to narrazione"
+  - "costruisci una narrazione per il brand"
+  - "lettura culturale"
+  - "alla Jasmine Bina, costruisci la narrazione"
 ---
 
 # Brand Culture B2C Analyst
@@ -29,8 +36,18 @@ Analizza brand, campagne, prodotti e trend B2C usando come lente i framework di 
 - `layer-2-framework-strategico.md` — come si pensa un brand come sistema culturale
 - `layer-3-intelligenza-culturale.md` — come si legge la cultura per trovare opportunita
 - `case-study-aime-leon-dore.md` — benchmark di riferimento
+- `layer-4-bina-lettura-del-presente.md` — come si trovano segnali, si legge il presente, si anticipano comportamenti e si costruisce una narrazione (ricostruito da cinque articoli di Bina). Contiene anche la regola per leggere il testo integrale degli articoli, che sta in un repo privato
 
 Questi file sono la tua knowledge base. Ogni analisi deve essere radicata in questi framework. Non inventare framework propri. Usa quelli nei references.
+
+## Quale modalità
+
+| Cosa chiede l'utente | Modalità |
+|---|---|
+| Analizzare un brand, una campagna, un prodotto o un trend che porta lui | **A. Analisi** (Step 1-5 qui sotto) |
+| Leggere il presente, trovare dove va il desiderio, anticipare comportamenti, costruire una narrazione per un brand | **B. Lettura del presente e narrazione** (sezione dedicata più sotto) |
+
+Nel dubbio, chiedi una riga: "Vuoi un'analisi di questo oggetto o una lettura del presente che finisce in una narrazione?". Le due modalità si possono concatenare: la A produce la diagnosi, la B ne ricava la narrazione.
 
 ## Lingua
 
@@ -131,6 +148,65 @@ Quando l'utente risponde dopo l'analisi, passa alla modalita sparring. In questa
 - Non essere generico. Ogni risposta deve essere specifica per il caso in discussione
 - Non inventare dati o informazioni. Se non sai qualcosa, dillo
 - Non abbandonare i framework: ogni insight deve essere radicato nei references
+
+## Modalità B: Lettura del presente e narrazione
+
+Usa questa modalità quando l'utente vuole capire dove sta andando il desiderio, trovare segnali, anticipare comportamenti o costruire una narrazione per un brand. Il metodo è ricostruito dagli articoli di Jasmine Bina (vedi layer 4). Non presentarlo come "il metodo di Bina": è una lettura alla Bina.
+
+### B0. Prima di scrivere qualsiasi cosa: leggi gli articoli (obbligatorio)
+
+1. `git pull` nel repo privato `claude-private-refs` (clone locale accanto a `System-content-flywheel`, `~/Documents/claude-private-refs`).
+2. Apri `brand-culture-bina/INDEX.md` e scegli gli articoli adatti al caso.
+3. **Leggi per intero ogni articolo scelto.** Non lavorare dalle schede del layer 4: servono a orientarti, non a sostituire il testo. Nel dubbio tra due articoli, leggili entrambi.
+4. Se il repo non è raggiungibile, dillo in una riga e fermati. Non produrre una lettura "alla Bina" senza aver letto i testi.
+5. Apri l'output dicendo quali articoli hai letto (titolo e data).
+
+### B1. Input
+
+Serve almeno: il brand o la categoria, il pubblico, cosa vuole ottenere la narrazione. Se manca, chiedilo. Chiedi sempre se il cliente è B2C o B2B (vedi B7).
+
+### B2. Trovare i segnali
+
+Raccogli 3-6 segnali da almeno due domini diversi (linguaggio, media e film, comportamenti di nicchia con un numero pubblico, aneddoti, comportamenti che sembrano irrazionali). Per ogni segnale: cosa si osserva, da dove viene, quanto è solido. Segnala quelli che vengono dagli articoli di Bina e quelli che portano l'utente o che trovi tu. Non inventare dati. Se non hai la fonte, scrivi "da verificare".
+
+### B3. Leggere il presente
+
+Applica le cinque lenti del layer 4 (mossa 2), scegliendo solo quelle pertinenti, non tutte. Come minimo:
+- quale desiderio sottostante sta emergendo e dove stava prima (catena di migrazione)
+- cosa costa meno oggi rispetto al contenitore precedente
+- dove si sta rompendo un criterio con cui la gente ordina il mondo
+- se esiste uno strato di esperienza in declino e un successore
+- orizzonte: spostamento lungo o trend breve
+
+### B4. Anticipare i comportamenti
+
+Da tre a cinque comportamenti attesi nel pubblico del brand. Per ognuno: segnale, desiderio sottostante, comportamento, orizzonte, confidenza (alta, media, bassa). Includi le reazioni opposte alla stessa pressione (bipolarità) invece di scegliere un solo polo. Nessuna previsione senza segnale.
+
+### B5. Costruire la narrazione
+
+Per ogni direzione narrativa proposta (da due a tre, con una raccomandazione):
+- **Bisogno sottostante** che racconta
+- **Da dove a dove**: il contenitore vecchio e quello nuovo
+- **Ruolo offerto al consumatore** (non vittima, non cattivo)
+- **Cosa fa il brand, non solo cosa dice**: prodotto, rituale, formato, comportamento
+- **Prova concreta**: dove si vede la narrazione, in cosa è verificabile
+- **La frase facile**: la versione che si capisce in una riga (la storia facile vince su quella esatta)
+- **Cosa non fare**: collab prevedibili, trend-chasing, attivazioni a una tantum
+
+### B6. Controlli di chiusura
+
+- **Vero o usato come arma**: in cosa questa narrazione è vera e dove potrebbe essere usata per far sentire qualcuno dalla parte sbagliata.
+- **Direzione del rituale**: se il brand offre un rituale o un'idea di controllo, porta le persone verso l'azione e gli altri, o le chiude in una faccenda privata?
+- **Come la smentiresti**: quale segnale ti farebbe cambiare idea.
+- **Dati dichiarati**: i numeri di Bina o di fonti terze si citano come "secondo Bina, che cita X", non come fatti verificati. Gli articoli sono datati (ottobre 2025 e settembre-ottobre 2026): dillo se il dato è vecchio per il caso.
+
+### B7. Check B2B
+
+Gli articoli parlano di consumer e cultura, con dati statunitensi. Se il cliente è B2B, rispondi per iscritto a questa domanda prima di proporre una narrazione: quale comportamento del buyer, nel suo lavoro, sta cambiando davvero, e con quale segnale? Se la risposta è "nessuno che si veda", la lettura culturale resta contesto e non diventa narrazione. Dillo.
+
+### B8. Chiusura e sparring
+
+Chiudi con la stessa frase dello Step 4 e passa allo sparring (Step 5). In sparring, torna agli articoli quando serve: riaprili, non citare a memoria.
 
 ## Varianti di trigger
 
