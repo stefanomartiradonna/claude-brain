@@ -170,6 +170,7 @@ Le skills sono in `~/.claude/skills/`. Ogni SKILL.md porta con sé la propria de
 - **business-case-builder**: business case col metodo Tharin
 - **okr-hybrid**: OKR con framework ibrido OKR+NCT
 - **gtm-icp-definition**: definizione e pressure-test dell'ICP dai dati clienti reali
+- **analisi-finanziaria-business**: come sta il business nei numeri e cosa fare per correggere la rotta. Cruscotto a quattro blocchi (margini, unit economics, cassa e runway, capitale circolante) letti insieme, cascata di otto diagnosi con un nome, mosse concentrate su una leva sola, gate del prezzo. Tre tracce: ricorrente, transazionale, servizi. Guarda il presente del business, mentre `business-case-builder` guarda la singola scommessa futura: questa sta a monte. Testo integrale della fonte (Marino, Learnn) nel repo privato
 - **prd-writer**: PRD per feature tradizionali o AI
 - **pawel-huryn**: ponte al plugin PM Skills di Huryn (69 skill, 42 workflow). Niente in locale: legge da GitHub `stefanomartiradonna/pm-skills` (fork di phuryn/pm-skills). Si attiva solo se nomino Huryn; senza, valgono le skill sopra
 
