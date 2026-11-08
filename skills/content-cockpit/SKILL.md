@@ -3,10 +3,11 @@ name: content-cockpit
 description: >
   Unica routine settimanale (lunedì) della content strategy di Stefano, consegnata su Google Doc: misura
   i post LinkedIn pubblicati (finestra matura 8-14 giorni) e ricalcola su tutto lo storico cosa funziona,
-  legge sito, conversioni e call, legge ogni settimana i post degli autori della watchlist, e chiude con
-  tre liste: 5 notizie tech da leggere con i suoi pillar, fino a 5 angoli dagli autori, e fino a 3
-  candidati Build in Public/Personal Brand/Offer dalla sua settimana. Riporta anche il mix dei contenuti
-  per categoria (Educational/Thought Leadership/Personal Brand/Build in Public/Offer) reale contro target.
+  legge sito, conversioni e call, legge ogni settimana gli autori della watchlist su LinkedIn, newsletter
+  propria e X, cerca anche nuovi content creator su X (radar X), e chiude con tre liste: 5 notizie tech
+  da leggere con i suoi pillar, fino a 5 angoli dagli autori, e fino a 3 candidati Build in Public/
+  Personal Brand/Offer dalla sua settimana. Riporta anche il mix dei contenuti per categoria
+  (Educational/Thought Leadership/Personal Brand/Build in Public/Offer) reale contro target.
   Si ferma, aspetta che Stefano dica cosa sviluppare, poi scrive solo quello, immagine inclusa. Impara
   dalle correzioni alle bozze, dalle previsioni verificate e da quali voci delle liste Stefano sceglie.
   Usa quando l'utente dice "cockpit", "report del lunedì", "lancia il cockpit", "come sono andati i post",
@@ -162,11 +163,14 @@ perché un log vuoto significa che il report sta misurando solo ciò che piace, 
 
 ## Fase 5: Gli autori della watchlist, ogni settimana
 
-Autori e temi stanno in `references/watchlist.md` di questa skill: si cambiano lì, non qui.
-La finestra è quella autori della Fase 0 (di norma 7 giorni). Con "radar" o "autori" da soli, fuori dal
-lunedì, si esegue solo questa fase più la Lista B, e il report va comunque su Doc (Fase 10).
+Autori e temi stanno in `references/watchlist.md` di questa skill: si cambiano lì, non qui. Da
+2026-11-08 ogni autore si legge su **tre canali** quando li ha: LinkedIn, newsletter propria
+(Substack o altra), X/Twitter. Non tutti gli autori hanno tutti e tre: `watchlist.md` dichiara quali
+canali ha ciascuno. La finestra è quella autori della Fase 0 (di norma 7 giorni). Con "radar" o
+"autori" da soli, fuori dal lunedì, si esegue solo questa fase più la Lista B, e il report va comunque
+su Doc (Fase 10).
 
-### Canale: il browser di Stefano
+### Canale: LinkedIn, il browser di Stefano
 
 **Primario: `chrome-devtools-mcp`**, che si attacca al Chrome già aperto e loggato su LinkedIn.
 `list_pages` per verificare che risponda, `navigate_page` sul profilo, `take_snapshot` per leggere i post.
@@ -184,29 +188,55 @@ usa il tabId che restituisce. Chiudi i tab che apri. ToolSearch:
 **Se nessuno dei due va**, o LinkedIn chiede il login: ricerca web per autore ("[autore] LinkedIn post
 [tema]") e dichiaralo in cima al report come dato parziale. Mai fermare il run per un profilo.
 
-Scrivi nel report quale canale hai usato.
+Scrivi nel report quale canale hai usato per LinkedIn.
+
+### Canale: newsletter propria e X
+
+Nessun browser loggato per questi due: **WebSearch e WebFetch** (ToolSearch se deferred). Per la
+newsletter, cerca l'ultimo numero pubblicato nella finestra e leggilo per intero se è il pezzo
+centrale, altrimenti il riassunto. Per X, la ricerca web indicizza male i singoli post: prova prima
+una ricerca diretta sul profilo, poi citazioni del post in articoli o thread terzi. Quando non riesci
+a recuperare nulla di verificabile, dichiaralo invece di riempire con un riassunto plausibile ma non
+letto. Stessa regola di LinkedIn: un canale assente per un autore in una settimana non ferma il run.
 
 ### Cosa leggere
 
-Per ogni autore apri `[URL profilo]recent-activity/all/` e prendi i post della finestra: hook, corpo se
-serve, formato, tema, reazioni e commenti se visibili.
+Per ogni autore, su ciascun canale che ha: fino a 3-4 contenuti rilevanti nella finestra (hook o tesi,
+corpo se serve, reazioni/commenti se visibili). Il tetto è per canale, non per autore: non triplicare
+il tempo di lettura solo perché un autore è su tre piattaforme, scarta subito i contenuti deboli.
 
-- Al massimo 3-4 post rilevanti per autore. Salta i repost senza commento, i "commenta per ricevere" e
-  i post solo promozionali.
-- Se un autore non ha pubblicato nella finestra, scrivilo e passa oltre. Dunford è rimasta senza post in
-  6 cicli su 8: è normale, non va riempito.
+- Salta i repost senza commento, i "commenta per ricevere" e i post solo promozionali.
+- Se un autore non ha pubblicato su un canale nella finestra, scrivilo e passa oltre. Dunford è rimasta
+  senza post in 6 cicli su 8: è normale, non va riempito.
 - Se un profilo non carica, annotalo e vai avanti.
 
 Poi i **temi core** della watchlist: una ricerca per tema sugli ultimi 7-10 giorni (newsletter di
 settore, report con dati, dibattiti). Scarta quello che potrebbe interessare qualsiasi marketer: non è
 un segnale, è rumore.
 
+### Radar X: nuovi creator (ogni settimana)
+
+Oltre agli autori fissi della watchlist, cerca su X nuovi content creator su brand, SaaS, AI, GTM,
+positioning che Stefano non segue ancora — liste "who to follow", thread di settore, citazioni in
+newsletter terze. Non è la watchlist: non entra in `references/watchlist.md` da sola, è una sezione a
+parte del report (Fase 10) con **esattamente questa tabella**:
+
+| Creator | Post (titolo/estratto) | Insight | Perché dovrebbe importare a Stefano | Cosa potrebbe scriverci sopra | Link |
+|---|---|---|---|---|---|
+
+"Insight" è cosa dice di specifico il post, non un riassunto vago. "Perché dovrebbe importare"
+aggancia un pillar/sotto-argomento di `pov.md` quando possibile (es. A1, B2, D4), o dichiara un altro
+motivo (tattica nuova, contro-esempio, trend) se non si aggancia a nessuno. Mai inventare un link.
+
+Se un creator trovato qui torna per 2-3 settimane con segnale buono, **proponilo** per l'ingresso nella
+watchlist vera (stesso meccanismo del loop C in Fase 9): non lo aggiungi da solo.
+
 ### Il filtro
 
-Ogni segnale che resta deve dichiarare quale POV di `pov.md` fa scalare e quale trigger del buyer di
-`audience.md` aggancia. Se non scala nessun POV, si scarta o finisce al massimo tra i segnali per la
-knowledge (Fase 10). Il confronto con gli ultimi due report (Fase 0) si fa qui: un angolo già proposto
-torna solo con un fatto nuovo.
+Ogni segnale che resta (LinkedIn, newsletter, X, temi core) deve dichiarare quale POV di `pov.md` fa
+scalare e quale trigger del buyer di `audience.md` aggancia. Se non scala nessun POV, si scarta o
+finisce al massimo tra i segnali per la knowledge (Fase 10). Il confronto con gli ultimi due report
+(Fase 0) si fa qui: un angolo già proposto torna solo con un fatto nuovo.
 
 La Fase 5 **non modifica** `knowledge/references/`, `hypotheses/` o `foundation/`: propone candidati,
 la promozione la decide Stefano.
@@ -485,12 +515,15 @@ Struttura, in quest'ordine, perché l'ordine è il messaggio:
 7. **Cosa ho imparato**: dalle tue correzioni (loop A), dalle previsioni (loop B), dalle tue scelte
    (loop C, incluso l'asse mix), e quali verdetti di `cosa-funziona.md` sono cambiati
 8. **Il contesto della settimana**, in breve: cosa è uscito dalle call e quali temi sono saturi
-9. **Cosa hanno scritto gli autori**: per autore, i temi della finestra e il post più notevole con il
-   perché, oppure "niente nella finestra". Poi i segnali dai temi core, con la fonte.
-10. **Le tre liste** (5 notizie tech, fino a 5 angoli dagli autori, fino a 3 candidati Build in
+9. **Cosa hanno scritto gli autori**: per autore, i canali letti (LinkedIn/newsletter/X), i temi della
+   finestra e il contenuto più notevole con il perché, oppure "niente nella finestra" per canale. Poi i
+   segnali dai temi core, con la fonte.
+10. **Radar X: nuovi creator**, la tabella di Fase 5 (Creator, Post, Insight, Perché, Cosa scriverci,
+    Link), oppure "nessun candidato solido questa settimana" se non c'è niente sopra la soglia.
+11. **Le tre liste** (5 notizie tech, fino a 5 angoli dagli autori, fino a 3 candidati Build in
     Public/Personal Brand/Offer), con i due che svilupperesti, poi stop
-11. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
-12. **Segnali per la knowledge**: solo candidati, nessun file modificato. Formato "CANDIDATO: [cosa] →
+12. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
+13. **Segnali per la knowledge**: solo candidati, nessun file modificato. Formato "CANDIDATO: [cosa] →
     [dove andrebbe] → [perché]". Decide Stefano.
 
 Poi committa e pusha `claude-private-refs` (dataset, report, bozze, `scelte.csv`, `cosa-funziona.*`): è
