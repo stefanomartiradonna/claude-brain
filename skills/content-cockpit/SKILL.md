@@ -4,12 +4,15 @@ description: >
   Unica routine settimanale (lunedì) della content strategy di Stefano, consegnata su Google Doc: misura
   i post LinkedIn pubblicati (finestra matura 8-14 giorni) e ricalcola su tutto lo storico cosa funziona,
   legge sito, conversioni e call, legge ogni settimana i post degli autori della watchlist, e chiude con
-  due liste: 5 notizie tech da leggere con i suoi pillar e fino a 5 angoli dagli autori. Si ferma, aspetta
-  che Stefano dica cosa sviluppare, poi scrive solo quello, immagine inclusa. Impara dalle correzioni alle
-  bozze, dalle previsioni verificate e da quali voci delle liste Stefano sceglie. Usa quando l'utente dice
-  "cockpit", "report del lunedì", "lancia il cockpit", "come sono andati i post", "radar", "lancia il
-  radar", "cosa hanno pubblicato gli autori", o quando lo scheduler settimanale lo invoca. Con "radar" o
-  "autori" da soli esegue solo la parte autori (Fase 5). NON pubblica mai niente: produce solo bozze e proposte.
+  tre liste: 5 notizie tech da leggere con i suoi pillar, fino a 5 angoli dagli autori, e fino a 3
+  candidati Build in Public/Personal Brand/Offer dalla sua settimana. Riporta anche il mix dei contenuti
+  per categoria (Educational/Thought Leadership/Personal Brand/Build in Public/Offer) reale contro target.
+  Si ferma, aspetta che Stefano dica cosa sviluppare, poi scrive solo quello, immagine inclusa. Impara
+  dalle correzioni alle bozze, dalle previsioni verificate e da quali voci delle liste Stefano sceglie.
+  Usa quando l'utente dice "cockpit", "report del lunedì", "lancia il cockpit", "come sono andati i post",
+  "radar", "lancia il radar", "cosa hanno pubblicato gli autori", o quando lo scheduler settimanale lo
+  invoca. Con "radar" o "autori" da soli esegue solo la parte autori (Fase 5). NON pubblica mai niente:
+  produce solo bozze e proposte.
 ---
 
 # Content Cockpit, report settimanale del lunedì
@@ -74,10 +77,12 @@ misurazione, non per merito.
    aggiornati e conservati: se il totale è più basso di prima, fermati, è un errore.
    Python: `py -3`, e se manca `python`.
 4. **Tagga i post nuovi in `temi.csv`**: una riga per ogni `activity_id` che c'è in `metrics.csv` e non lì,
-   con fino a tre tag e il formato retorico. Usa solo i tag e i formati definiti nelle sezioni 1 e 2 di
-   `voce-analisi.md`; se un post non ci sta, scegli il più vicino e segnalalo nel report invece di
-   inventare un tag nuovo. Un post fuori dalla tua rete (How Small Brands Grow, un'altra testata) o
-   cancellato va anche in `esclusi.csv`, con il motivo.
+   con fino a tre tag, il formato retorico e la **categoria mix**. Per tag e formato retorico usa solo
+   quelli definiti nelle sezioni 1 e 2 di `voce-analisi.md`; per la categoria mix usa solo le 5 di
+   `content-strategy.md` §2bis (Educational, Thought Leadership, Personal Brand, Build in Public, Offer).
+   Se un post non ci sta bene in nessuna, scegli la più vicina e segnalalo nel report invece di inventarne
+   una sesta. Un post fuori dalla tua rete (How Small Brands Grow, un'altra testata) o cancellato va anche
+   in `esclusi.csv`, con il motivo.
 5. **Aggiorna `scelte.csv`**:
    - le voci del report precedente con `scelta` ancora vuota diventano `si` se Stefano le ha fatte
      sviluppare (c'è una bozza in `bozze.md` o in `post-idee/` che le cita) e `no` altrimenti;
@@ -208,10 +213,10 @@ la promozione la decide Stefano.
 
 ## Fase 6: I temi della settimana, da quattro fonti
 
-Le due liste della Fase 7 si costruiscono dalle fonti 2 (autori) e 4 (mosse delle aziende). Le fonti
-1 (la sua settimana) e 3 (archivio) restano letture di contesto: servono al lessico, a non ripetere
-angoli già usati e a vedere i temi saturi. Se da una call esce un caso forte, va in una riga in coda
-alle liste e decide Stefano se farne un pezzo.
+Le liste A e B della Fase 7 si costruiscono dalle fonti 2 (autori) e 4 (mosse delle aziende). La
+fonte 3 (archivio) resta lettura di contesto: serve al lessico, a non ripetere angoli già usati e a
+vedere i temi saturi. La fonte 1 (la sua settimana) alimenta **sia** il contesto **sia**, da quando
+esiste la Lista C (vedi sotto), candidati veri per Build in Public/Personal Brand/Offer.
 
 Guarda in quest'ordine.
 
@@ -242,6 +247,13 @@ Guarda in quest'ordine.
    **Se Granola non è disponibile o non è autorizzato, scrivilo nel report** e vai avanti con le altre
    fonti. Non saltare la riga in silenzio: una fonte assente dichiarata è informazione, una fonte
    assente taciuta fa credere che quella settimana non ci fossero call.
+
+   **Candidati per Lista C (Build in Public / Personal Brand / Offer).** Oltre a quanto sopra, cerca
+   esplicitamente cosa è successo *davvero* questa settimana nel lavoro di Stefano: un commit o una
+   decisione nel sistema di content flywheel stesso, l'iterazione di un metodo, una call che ha chiuso
+   bene un caso cliente. Stessa anonimizzazione obbligatoria di sopra. Filtro più leggero di quello
+   di Lista A/B: non serve agganciare un pillar di `pov.md` per forza — dichiaralo quando c'è, lascialo
+   vuoto quando non c'è senza scartare il candidato solo per questo.
 2. **Il mercato.** Quello che hai letto alla Fase 5: autori della watchlist e temi core.
 3. **L'archivio.** Post sopra la mediana pubblicati più di sei mesi fa, da aggiornare; oppure tre-cinque
    post sullo stesso tema da fondere in un pezzo unico. Materiale già validato dai numeri, che nessuno
@@ -260,19 +272,24 @@ Guarda in quest'ordine.
      candidato. Mai un numero preso solo dal riassunto di una ricerca senza dichiararlo.
 
 Poi applica il filtro che è il cuore del sistema: **questo serve a scalare un POV di Stefano?** Un tema
-che gira ma non aggancia `foundation/pov.md` si scarta, non si include perché è di moda.
+che gira ma non aggancia `foundation/pov.md` si scarta, non si include perché è di moda. Per i candidati
+di Lista C questo filtro è opzionale (vedi sopra): non scartare un buon Build in Public/Personal Brand
+solo perché non aggancia un pillar.
 
-Per ogni tema trattenuto dichiara se serve a **demand gen** (allargare il pubblico) o **demand capture**
-(convertire chi già cerca). Stefano vuole entrambe, ma ogni singolo pezzo ne serve una sola, e sono
-stili diversi che si misurano con KPI diversi.
+Per ogni tema trattenuto dichiara se serve a **demand gen** (allargare il pubblico), **demand capture**
+(convertire chi già cerca) o **nurture** (restare nella testa di chi lo conosce già ma non ha ancora
+un'esigenza — il tipico obiettivo di Personal Brand e Build in Public). Stefano vuole tutti e tre, ma
+ogni singolo pezzo ne serve uno solo, e sono stili diversi che si misurano con KPI diversi. Dichiara
+anche la **categoria mix** (`content-strategy.md` §2bis): è l'asse che alimenta la sezione "mix dei
+contenuti" del report (Fase 10) e vale per le voci di tutte e tre le liste, non solo la C.
 
 **Nei dati i due obiettivi vanno in direzioni opposte**: il post con più reach (Como e Disney, 7.902
 impressioni, tema consumer) ha uno dei peggiori engagement rate, mentre i cinque post più risonanti
 stanno tutti sotto le 300 impressioni e sono tutti B2B core. Non mescolarli in un unico giudizio.
 
-## Fase 7: Le due liste, poi fermati
+## Fase 7: Le tre liste, poi fermati
 
-**Non scrivere ancora i post.** La routine chiude con due liste. Stefano le legge e dice cosa
+**Non scrivere ancora i post.** La routine chiude con tre liste. Stefano le legge e dice cosa
 sviluppare.
 
 **L'ordine dentro ogni lista lo decide anche `scelte.csv`.** Prima dei pesi, vale il filtro della Fase 6.
@@ -296,17 +313,29 @@ spesso era la notizia, non il tema.
 - **L'angolo di Stefano**: dove va un passo oltre l'autore, e quale pillar aggancia
 - **La prima riga** possibile
 
-**Fino a 5, non 5 per forza.** In una settimana magra gli angoli buoni possono essere tre: scrivi quanti
-sono e perché, non riempire con materiale debole. Una voce mediocre in lista costa a Stefano più tempo
-di quanto ne faccia risparmiare.
+**Lista C: fino a 3 candidati Build in Public / Personal Brand / Offer** (fonte 1, dalla Fase 6 di
+questo run). Per ciascuno:
 
-Poi **di' quali due svilupperesti tu e perché**. Dieci voci senza gerarchia spostano su Stefano il
-lavoro di scelta, che è il lavoro che la routine dovrebbe togliergli.
+- **Cosa è successo**, in una riga, già anonimizzato dove serve
+- **Categoria mix**: Build in Public, Personal Brand o Offer
+- **Il pillar**, se c'è (opzionale per questa lista, vedi Fase 6)
+- **La prima riga** possibile
 
-**Registra ogni voce in `scelte.csv`** prima di fermarti: `data_report`, `voce` (A1, B3...), `lista`,
-`fonte` (l'azienda per la Lista A, l'autore per la B), `pillar` (il codice di `pov.md`, es. A1, C1),
-`obiettivo` (`gen` o `capture`), `scelta` vuota, `activity_id` vuoto. Quando Stefano dice cosa tiene,
-nella stessa sessione, metti `si` su quelle e `no` sulle altre.
+**Fino a 5 (A e B) o 3 (C), non per forza al massimo.** In una settimana magra gli angoli buoni possono
+essere meno: scrivi quanti sono e perché, non riempire con materiale debole. Una voce mediocre in lista
+costa a Stefano più tempo di quanto ne faccia risparmiare. In una settimana senza materiale per la
+Lista C, scrivilo e lasciala vuota: non è un errore, è normale per fonti che dipendono dalla sua
+settimana reale.
+
+Poi **di' quali due svilupperesti tu e perché**, tra tutte e tre le liste. Tredici voci senza gerarchia
+spostano su Stefano il lavoro di scelta, che è il lavoro che la routine dovrebbe togliergli.
+
+**Registra ogni voce in `scelte.csv`** prima di fermarti: `data_report`, `voce` (A1, B3, C2...), `lista`
+(`A`, `B` o `C`), `fonte` (l'azienda per la Lista A, l'autore per la B, "la sua settimana" per la C),
+`pillar` (il codice di `pov.md`, es. A1, C1 — vuoto per Lista C quando non c'è), `obiettivo` (`gen`,
+`capture` o `nurture`), `categoria_mix` (una delle 5 di `content-strategy.md` §2bis, per ogni voce di
+tutte e tre le liste), `scelta` vuota, `activity_id` vuoto. Quando Stefano dice cosa tiene, nella stessa
+sessione, metti `si` su quelle e `no` sulle altre.
 
 **Anti-ripetizione:** scarta angoli già in `post-idee/` o già pubblicati in `published.md`, a meno che
 non ci sia un motivo esplicito per rifarli (dato nuovo, evidenza contraria). Scarta anche gli angoli
@@ -327,7 +356,8 @@ sullo stesso tema perde più credibilità di quanta ne guadagni con un post in p
 
 **Scrivi invocando la skill `linkedin-viral-post-writer`**, che è l'autorità sulla voce di Stefano.
 Il cockpit non la duplica e non la sostituisce: le passa il contesto (tema, formato, pezzi vecchi da
-linkare, obiettivo gen o capture) e lascia che sia lei a dettare voce, struttura e hook. Vedi
+linkare, obiettivo gen/capture/nurture, categoria mix) e lascia che sia lei a dettare voce, struttura
+e hook. Vedi
 "Dipendenze" in fondo per l'ordine di precedenza.
 
 **Se il pezzo viene dalla Lista A (notizia tech), la struttura è fissa, in quattro passi:**
@@ -347,6 +377,11 @@ da verificare prima di pubblicare.
 
 **Se il pezzo viene dalla Lista B (angolo di un autore)**, cita l'autore e vai un passo oltre: la sua
 frase è il punto di partenza, la tesi deve essere di Stefano.
+
+**Se il pezzo viene dalla Lista C (Build in Public / Personal Brand / Offer)**, niente struttura fissa
+a passi: è il tipo di pezzo più vicino a BACKSTORY nel §2 di `content-strategy.md`, prima persona,
+concreto, un fatto reale di quella settimana. Per Offer, resta nel registro soft deciso in §2bis:
+disponibilità o risultato cliente, mai una call-to-action diretta a comprare.
 
 Per ogni pezzo scritto registra una **previsione** (impressioni ed engagement rate attesi, e su quale
 dato dell'archivio si basa): serve al loop B della Fase 9.
@@ -402,9 +437,9 @@ Infine registra le previsioni di questa settimana, così fra due settimane saran
 
 ### Loop C — Le tue scelte sulle liste (segnale ogni settimana)
 
-Ogni lunedì Stefano tiene due voci su dieci e scarta le altre. Dice quali fonti, pillar e obiettivi gli
-servono davvero, ed è un segnale pulito, che non dipende dai volumi di LinkedIn. Sta in `scelte.csv`, e
-`cosa-funziona.md` lo riassume per lista, fonte e pillar.
+Ogni lunedì Stefano tiene due voci su tredici e scarta le altre. Dice quali fonti, pillar, obiettivi e
+categorie mix gli servono davvero, ed è un segnale pulito, che non dipende dai volumi di LinkedIn. Sta
+in `scelte.csv`, e `cosa-funziona.md` lo riassume per lista, fonte, pillar e categoria mix.
 
 - **Nel report**: una riga su cosa dicono le scelte finora, con il numero di settimane su cui si regge.
   Prima di quattro settimane di dati, scrivi solo i conteggi, senza trarne una tendenza.
@@ -415,6 +450,9 @@ servono davvero, ed è un segnale pulito, che non dipende dai volumi di LinkedIn
 - **Quando i numeri e le scelte divergono**, dillo. Se Stefano sceglie sempre un pillar che poi fa
   sotto la mediana, o scarta sempre quello che va meglio, non è una cosa da correggere in silenzio: è
   una decisione sua, tra quello che vuole dire e quello che funziona.
+- **Categoria mix**: se Stefano scarta sistematicamente le voci di una categoria (es. non sceglie mai
+  Offer, o sempre Educational), dillo accanto alla sezione "mix dei contenuti" di Fase 10: è lo stesso
+  tipo di segnale degli altri due punti, letto sull'asse mix invece che su fonte/pillar.
 
 ## Fase 10: Output, su Google Doc
 
@@ -438,16 +476,21 @@ Struttura, in quest'ordine, perché l'ordine è il messaggio:
 1. **Una riga di verdetto**: la cosa che Stefano deve sapere se legge solo la prima riga
 2. **Stato dei dati**: cosa è fresco, cosa è degradato, cosa manca, e quale canale ha letto gli autori
 3. **KPI della finestra matura** + il migliore + trend, da `cosa-funziona.md`
-4. **Cosa fare per migliorare i KPI**, agganciato ai numeri
-5. **Sito e conversioni** (con l'avvertenza sui volumi finché resta vera)
-6. **Cosa ho imparato**: dalle tue correzioni (loop A), dalle previsioni (loop B), dalle tue scelte
-   (loop C), e quali verdetti di `cosa-funziona.md` sono cambiati
-7. **Il contesto della settimana**, in breve: cosa è uscito dalle call e quali temi sono saturi
-8. **Cosa hanno scritto gli autori**: per autore, i temi della finestra e il post più notevole con il
+4. **Il mix dei contenuti: reale vs target**. Dalla dimensione "Categoria mix" di `cosa-funziona.md`
+   (finestra rolling 8-12 settimane, mai la singola settimana), confrontata con i target di
+   `content-strategy.md` §2bis. Segnala la categoria più sotto quota e, se ci sono meno di 4 settimane
+   di dati con `categoria_mix` popolata, scrivi solo i conteggi grezzi senza trarne una tendenza.
+5. **Cosa fare per migliorare i KPI**, agganciato ai numeri
+6. **Sito e conversioni** (con l'avvertenza sui volumi finché resta vera)
+7. **Cosa ho imparato**: dalle tue correzioni (loop A), dalle previsioni (loop B), dalle tue scelte
+   (loop C, incluso l'asse mix), e quali verdetti di `cosa-funziona.md` sono cambiati
+8. **Il contesto della settimana**, in breve: cosa è uscito dalle call e quali temi sono saturi
+9. **Cosa hanno scritto gli autori**: per autore, i temi della finestra e il post più notevole con il
    perché, oppure "niente nella finestra". Poi i segnali dai temi core, con la fonte.
-9. **Le due liste** (5 notizie tech, fino a 5 angoli dagli autori), con i due che svilupperesti, poi stop
-10. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
-11. **Segnali per la knowledge**: solo candidati, nessun file modificato. Formato "CANDIDATO: [cosa] →
+10. **Le tre liste** (5 notizie tech, fino a 5 angoli dagli autori, fino a 3 candidati Build in
+    Public/Personal Brand/Offer), con i due che svilupperesti, poi stop
+11. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
+12. **Segnali per la knowledge**: solo candidati, nessun file modificato. Formato "CANDIDATO: [cosa] →
     [dove andrebbe] → [perché]". Decide Stefano.
 
 Poi committa e pusha `claude-private-refs` (dataset, report, bozze, `scelte.csv`, `cosa-funziona.*`): è
@@ -488,6 +531,7 @@ sola, fuori da questa routine.
 | `linkedin-viral-post-writer` | **Autorità sulla voce e sulla struttura dei post.** Scritta da Stefano, vive di vita propria, si usa anche da sola per un post singolo in qualsiasi momento | Fase 8, per scrivere i pezzi scelti |
 | `references/watchlist.md` | Autori e temi da leggere | Fase 5 |
 | `claude-private-refs/linkedin/cosa_funziona.py` | Ricalcolo settimanale di cosa funziona su tutto lo storico | Fase 1, poi letto in Fasi 2, 7 e 9 |
+| `knowledge/foundation/content-strategy.md` §2bis | Vocabolario vincolato delle 5 categorie mix e i loro target % | Fase 1 (tagging), Fase 6 (dichiarazione per voce), Fase 10 (sezione mix) |
 
 **Il cockpit non duplica mai la skill di scrittura.** Se una regola di scrittura serve in entrambi i
 posti, va messa nella skill di scrittura e richiamata da qui, non copiata.
