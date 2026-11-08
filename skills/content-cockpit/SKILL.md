@@ -164,11 +164,11 @@ perché un log vuoto significa che il report sta misurando solo ciò che piace, 
 ## Fase 5: Gli autori della watchlist, ogni settimana
 
 Autori e temi stanno in `references/watchlist.md` di questa skill: si cambiano lì, non qui. Da
-2026-11-08 ogni autore si legge su **tre canali** quando li ha: LinkedIn, newsletter propria
-(Substack o altra), X/Twitter. Non tutti gli autori hanno tutti e tre: `watchlist.md` dichiara quali
-canali ha ciascuno. La finestra è quella autori della Fase 0 (di norma 7 giorni). Con "radar" o
-"autori" da soli, fuori dal lunedì, si esegue solo questa fase più la Lista B, e il report va comunque
-su Doc (Fase 10).
+2026-11-08 ogni autore si legge su **fino a quattro canali** quando li ha: LinkedIn, newsletter propria
+(Substack o altra), X/Twitter, Instagram (solo per chi lo usa come canale primario, es. Emily Segal/
+Nemesis). Non tutti gli autori hanno tutti e quattro: `watchlist.md` dichiara quali canali ha ciascuno.
+La finestra è quella autori della Fase 0 (di norma 7 giorni). Con "radar" o "autori" da soli, fuori dal
+lunedì, si esegue solo questa fase più la Lista B, e il report va comunque su Doc (Fase 10).
 
 ### Canale: LinkedIn, il browser di Stefano
 
@@ -190,14 +190,17 @@ usa il tabId che restituisce. Chiudi i tab che apri. ToolSearch:
 
 Scrivi nel report quale canale hai usato per LinkedIn.
 
-### Canale: newsletter propria e X
+### Canale: newsletter propria, X e Instagram
 
-Nessun browser loggato per questi due: **WebSearch e WebFetch** (ToolSearch se deferred). Per la
+Nessun browser loggato per questi tre: **WebSearch e WebFetch** (ToolSearch se deferred). Per la
 newsletter, cerca l'ultimo numero pubblicato nella finestra e leggilo per intero se è il pezzo
 centrale, altrimenti il riassunto. Per X, la ricerca web indicizza male i singoli post: prova prima
-una ricerca diretta sul profilo, poi citazioni del post in articoli o thread terzi. Quando non riesci
-a recuperare nulla di verificabile, dichiaralo invece di riempire con un riassunto plausibile ma non
-letto. Stessa regola di LinkedIn: un canale assente per un autore in una settimana non ferma il run.
+una ricerca diretta sul profilo, poi citazioni del post in articoli o thread terzi. Per Instagram è
+anche peggio: spesso non recuperi nulla oltre la bio pubblica e qualche didascalia indicizzata, e il
+sito ufficiale dell'autore (quando esiste) è spesso la fonte migliore per trovare caption o temi
+recenti citati altrove. Quando non riesci a recuperare nulla di verificabile, dichiaralo invece di
+riempire con un riassunto plausibile ma non letto. Stessa regola di LinkedIn: un canale assente per un
+autore in una settimana non ferma il run.
 
 ### Cosa leggere
 
