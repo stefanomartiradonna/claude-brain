@@ -56,6 +56,9 @@ L'output sono bozze che Stefano edita.
 4. **Rileggi le liste e la sezione autori degli ultimi due report** in `claude-private-refs/linkedin/cockpit/`.
    Non è facoltativo: il 25/10 una stesura costruita senza rileggere il ciclo precedente aveva 3 angoli su
    7 doppi e uno su un dato già scartato. Un angolo già proposto torna solo con un fatto nuovo, e lo dici.
+   **Controlla anche se l'ultimo report era "parziale, fermato a Fase 5"** (vedi Fase 5): se sì, non
+   ripartire da zero sulla watchlist. Riparti dagli autori/canali che quel report dichiarava non ancora
+   tentati, e tratta quelli già coperti come fatti per questa finestra.
 5. Determina la data del run e le finestre:
    - **Finestra matura**: post pubblicati tra 14 e 8 giorni fa. È quella che si misura.
    - **Finestra fresca**: ultimi 7 giorni. Si cita solo come anticipazione, mai per trarre conclusioni.
@@ -170,6 +173,32 @@ Nemesis). Non tutti gli autori hanno tutti e quattro: `watchlist.md` dichiara qu
 La finestra è quella autori della Fase 0 (di norma 7 giorni). Con "radar" o "autori" da soli, fuori dal
 lunedì, si esegue solo questa fase più la Lista B, e il report va comunque su Doc (Fase 10).
 
+### Fase 5 è bloccante (da 2026-11-09)
+
+**Le Fasi 6 e 7 non partono finché Fase 5 non è completa.** Completa vuol dire: per ogni autore della
+tabella e per ogni canale che ha, uno di questi tre esiti è stato raggiunto — letto con contenuti nella
+finestra, letto e dichiarato "niente nella finestra", oppure dichiarato "canale non raggiungibile" con
+il motivo. Non è un esito valido fermarsi a metà tabella e scrivere il report come se fosse finita: è
+esattamente l'errore del run del 9/11 (4 autori su 16 letti, gli altri 12 mai nemmeno tentati, nessun
+avviso). Un autore saltato per tempo non è "niente da segnalare", è un blocco.
+
+**Se Fase 5 non può completarsi** (un canale sistemicamente irraggiungibile — es. Chrome non risponde e
+non c'è fallback — oppure il tempo/budget del run finisce a metà tabella):
+
+1. **Fermati prima di Fase 6.** Non inventare una Lista B parziale su un campione incompleto di autori.
+2. **Manda una notifica push** (tool `PushNotification`, se disponibile in sessione) con un messaggio
+   specifico e azionabile: cosa è bloccato e cosa serve a Stefano per sbloccarlo. Esempi: "Cockpit
+   fermo: Chrome non risponde, serve login LinkedIn per continuare gli autori" oppure "Cockpit fermo a
+   metà watchlist (9/16 autori letti), tempo esaurito: dimmi se continuare ora o lunedì prossimo". Se
+   `PushNotification` non è disponibile in quella sessione, scrivilo comunque in cima alla risposta in
+   chat, non solo nel Doc di fine run.
+3. **Completa comunque le Fasi 0-4** (dataset, KPI, PostHog, conversioni) e consegna quel report
+   parziale su Doc, intitolato chiaramente "parziale, fermato a Fase 5" in cima (sezione 1). KPI, mix
+   dei contenuti e sito sono indipendenti dagli autori: non buttarli via solo perché Fase 5 è bloccata.
+4. **Dichiara nel report esattamente quali autori/canali restano da leggere**, nello stesso formato
+   della regola di copertura sotto, così la Fase 5 successiva (rilanciata a mano o il lunedì dopo) parte
+   da lì invece che da capo.
+
 ### Canale: LinkedIn, il browser di Stefano
 
 **Primario: `chrome-devtools-mcp`**, che si attacca al Chrome già aperto e loggato su LinkedIn.
@@ -200,7 +229,9 @@ anche peggio: spesso non recuperi nulla oltre la bio pubblica e qualche didascal
 sito ufficiale dell'autore (quando esiste) è spesso la fonte migliore per trovare caption o temi
 recenti citati altrove. Quando non riesci a recuperare nulla di verificabile, dichiaralo invece di
 riempire con un riassunto plausibile ma non letto. Stessa regola di LinkedIn: un canale assente per un
-autore in una settimana non ferma il run.
+autore in una settimana non ferma il run — è un dato, non un blocco. **Il blocco (sopra) è un'altra
+cosa**: scatta solo quando l'intera Fase 5 non riesce a passare per tutta la tabella, non quando un
+singolo canale di un singolo autore non dà risultati.
 
 ### Cosa leggere
 
@@ -213,14 +244,12 @@ il tempo di lettura solo perché un autore è su tre piattaforme, scarta subito 
   senza post in 6 cicli su 8: è normale, non va riempito.
 - Se un profilo non carica, annotalo e vai avanti.
 
-**Copertura obbligatoria, da dichiarare sempre nel report (Fase 10, sezione "Cosa hanno scritto gli
-autori").** La watchlist può crescere; il tempo per leggerla no. Se non riesci a passare per **ogni**
-autore della tabella prima di scrivere il report, non lasciarlo intuire da un'assenza silenziosa:
-elenca per nome quali autori hai letto, su quali canali, e quali hai **saltato per tempo/budget**
-invece di "non ha pubblicato". Un autore mai controllato e un autore senza post nella finestra sono
-due informazioni diverse: la prima dice "la prossima settimana riparti da qui", la seconda dice
-"tutto regolare". Confonderle fa credere a Stefano che la watchlist sia stata letta per intero quando
-non lo è stata.
+**Copertura obbligatoria.** La watchlist può crescere; il tempo per leggerla no. Un autore mai
+controllato e un autore senza post nella finestra sono due informazioni diverse: la prima dice "non
+ancora tentato", la seconda dice "tentato, niente di nuovo". Non confonderle mai nel report. Se ti
+accorgi che non farai in tempo a passare per **ogni** autore della tabella su tutti i suoi canali,
+questo è il caso del blocco descritto sopra ("Fase 5 è bloccante"): fermati lì, non scrivere un report
+come se la copertura fosse completa quando non lo è.
 
 Poi i **temi core** della watchlist: una ricerca per tema sugli ultimi 7-10 giorni (newsletter di
 settore, report con dati, dibattiti). Scarta quello che potrebbe interessare qualsiasi marketer: non è
