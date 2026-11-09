@@ -3,9 +3,9 @@
 Configurazione della parte autori del cockpit (Fase 5 di `../SKILL.md`). Per cambiare chi si legge o
 quali temi si cercano si modifica questo file, non la skill.
 
-Ultima revisione: 2026-11-08 (8 nuovi autori multi-canale aggiunti su richiesta diretta di Stefano;
-LinkedIn/Substack/X ricercati per ciascuno, canali non trovati o non verificabili segnati come tali;
-poi Emily Segal/Nemesis aggiunta con Instagram come quarto canale possibile).
+Ultima revisione: 2026-11-09 (Douwe Wester rimosso su richiesta di Stefano: nessun post nella
+finestra in 6 cicli su 8 prima della rimozione; prima, 2026-11-08, 8 nuovi autori multi-canale
+aggiunti su richiesta diretta di Stefano, poi Emily Segal/Nemesis con Instagram come quarto canale).
 
 ---
 
@@ -22,7 +22,6 @@ quando il cockpit ha accesso a un browser. Instagram è il canale più difficile
 | Maja Voje | https://www.linkedin.com/in/majavoje/ | — | — | — | GTM strategy, early stage | Segmento vicino; pattern hook + framework |
 | April Dunford | https://www.linkedin.com/in/aprildunford/ | — | — | — | Positioning B2B, architetture multi-product | Fonte primaria del metodo (Obviously Awesome); il pillar architetture deriva da lei |
 | Alex Estner | https://www.linkedin.com/in/alexander-estner/ | — | — | — | GTM execution, anchor framework | Fonte del framework anchor; reframe diagnostico |
-| Douwe Wester | https://www.linkedin.com/in/douwewester/ | — | — | — | GTM assessment, positioning early stage | Top performer sul reframe; dialoghi con reazione emotiva |
 | Rob Kaminski | https://www.linkedin.com/in/heyrobk/ | — | — | — | Positioning & messaging B2B (Fletch) | Fonte del framework H1/homepage; contenuti visual |
 | Anthony Pierri | https://www.linkedin.com/in/anthonypierri/ | — | — | — | Homepage messaging B2B (Fletch) | Fonte H1; registro sarcastico su AI hype |
 | Pierre Herubel | https://www.linkedin.com/in/pierre-herubel-540b3949/ | — | — | — | Content strategy B2B | Pattern di struttura post + caroselli; engagement alto |

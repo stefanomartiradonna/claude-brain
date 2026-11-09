@@ -213,6 +213,15 @@ il tempo di lettura solo perché un autore è su tre piattaforme, scarta subito 
   senza post in 6 cicli su 8: è normale, non va riempito.
 - Se un profilo non carica, annotalo e vai avanti.
 
+**Copertura obbligatoria, da dichiarare sempre nel report (Fase 10, sezione "Cosa hanno scritto gli
+autori").** La watchlist può crescere; il tempo per leggerla no. Se non riesci a passare per **ogni**
+autore della tabella prima di scrivere il report, non lasciarlo intuire da un'assenza silenziosa:
+elenca per nome quali autori hai letto, su quali canali, e quali hai **saltato per tempo/budget**
+invece di "non ha pubblicato". Un autore mai controllato e un autore senza post nella finestra sono
+due informazioni diverse: la prima dice "la prossima settimana riparti da qui", la seconda dice
+"tutto regolare". Confonderle fa credere a Stefano che la watchlist sia stata letta per intero quando
+non lo è stata.
+
 Poi i **temi core** della watchlist: una ricerca per tema sugli ultimi 7-10 giorni (newsletter di
 settore, report con dati, dibattiti). Scarta quello che potrebbe interessare qualsiasi marketer: non è
 un segnale, è rumore.
