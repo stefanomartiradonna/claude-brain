@@ -144,6 +144,7 @@ Le skills sono in `~/.claude/skills/`. Ogni SKILL.md porta con sé la propria de
 - **company-teardown**: analisi giornalistiche long-form per la rubrica della newsletter
 - **case-study-creator**: case study B2B per outreach, deck e sito
 - **brand-culture-b2c-analyst**: analisi di brand, campagne e trend B2C (Andjelic, Bina). Seconda modalità "Lettura del presente e narrazione": trova segnali, anticipa comportamenti, costruisce narrazioni. Legge per intero gli articoli di Bina dal repo privato `claude-private-refs/brand-culture-bina/` prima di rispondere
+- **segal-cultural-forecasting**: lettura del presente alla Emily Segal (K-HOLE, Nemesis): sintomo e gerarchia che trema, pattern trasversale, tetrad, matrice 2x2, neologismo e come verrà frainteso, linea di commoditizzazione. Fonti lette online. Catena: brand-culture-b2c-analyst (modalità B) → questa, con due output separati; fusione Bina × Segal su richiesta
 - **how-small-brands-growth**: crescita di brand challenger consumer (Kinner, Pauwels) e pezzi della rubrica HSBG
 
 ### Positioning e messaging

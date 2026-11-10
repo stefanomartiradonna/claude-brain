@@ -46,6 +46,7 @@ Questi file sono la tua knowledge base. Ogni analisi deve essere radicata in que
 |---|---|
 | Analizzare un brand, una campagna, un prodotto o un trend che porta lui | **A. Analisi** (Step 1-5 qui sotto) |
 | Leggere il presente, trovare dove va il desiderio, anticipare comportamenti, costruire una narrazione per un brand | **B. Lettura del presente e narrazione** (sezione dedicata più sotto) |
+| Prima Bina poi Segal, oppure fusione tra le due letture | Skill `segal-cultural-forecasting` (modalità B o C): esegue questa modalità B e poi la rilegge alla Segal |
 
 Nel dubbio, chiedi una riga: "Vuoi un'analisi di questo oggetto o una lettura del presente che finisce in una narrazione?". Le due modalità si possono concatenare: la A produce la diagnosi, la B ne ricava la narrazione.
 
