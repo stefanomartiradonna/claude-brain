@@ -8,7 +8,10 @@
       "mcp__chrome-devtools-mcp__list_pages",
       "mcp__chrome-devtools-mcp__select_page",
       "WebSearch",
-      "mcp__chrome-devtools-mcp__navigate_page"
+      "mcp__chrome-devtools-mcp__navigate_page",
+      "mcp__claude_ai_Learnn__get_lesson",
+      "mcp__chrome-devtools-mcp__close_page",
+      "mcp__apify__apify--web-fetch"
     ]
   },
   "model": "opus",
@@ -40,7 +43,7 @@
   },
   "autoUpdatesChannel": "latest",
   "agentPushNotifEnabled": true,
-  "effortLevel": "max",
+  "effortLevel": "high",
   "skillOverrides": {
     "pm-data-analytics-ab-test-analysis": "off",
     "pm-data-analytics-cohort-analysis": "off",
