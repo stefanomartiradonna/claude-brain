@@ -1,19 +1,16 @@
 ---
 name: content-cockpit
 description: >
-  Unica routine settimanale (lunedì) della content strategy di Stefano, consegnata su Google Doc: misura
-  i post LinkedIn pubblicati (finestra matura 8-14 giorni) e ricalcola su tutto lo storico cosa funziona,
-  legge sito, conversioni e call, legge ogni settimana gli autori della watchlist su LinkedIn, newsletter
-  propria e X, cerca anche nuovi content creator su X (radar X), e chiude con tre liste: 5 notizie tech
-  da leggere con i suoi pillar, fino a 5 angoli dagli autori, e fino a 3 candidati Build in Public/
-  Personal Brand/Offer dalla sua settimana. Riporta anche il mix dei contenuti per categoria
-  (Educational/Thought Leadership/Personal Brand/Build in Public/Offer) reale contro target.
-  Si ferma, aspetta che Stefano dica cosa sviluppare, poi scrive solo quello, immagine inclusa. Impara
-  dalle correzioni alle bozze, dalle previsioni verificate e da quali voci delle liste Stefano sceglie.
-  Usa quando l'utente dice "cockpit", "report del lunedì", "lancia il cockpit", "come sono andati i post",
-  "radar", "lancia il radar", "cosa hanno pubblicato gli autori", o quando lo scheduler settimanale lo
-  invoca. Con "radar" o "autori" da soli esegue solo la parte autori (Fase 5). NON pubblica mai niente:
-  produce solo bozze e proposte.
+  Routine settimanale (lunedì) della content strategy di Stefano, consegnata su Google Doc: misura i
+  post LinkedIn (finestra 8-14 giorni) e ricalcola cosa funziona, legge sito, conversioni e call, legge
+  ogni settimana tutti gli autori della watchlist su LinkedIn, newsletter, X, YouTube e Instagram più i
+  temi core, con un registro di copertura che blocca la Fase 6 se una riga resta aperta, e chiude con tre
+  liste: 5 notizie tech, fino a 5 angoli dagli autori, fino a 3 candidati dalla sua settimana. Riporta il
+  mix dei contenuti reale contro target. Si ferma, aspetta la scelta di Stefano, poi scrive solo quello,
+  immagine inclusa. Impara da correzioni, previsioni e scelte.
+  Usa con "cockpit", "report del lunedì", "come sono andati i post", "radar", "cosa hanno pubblicato gli
+  autori", o quando lo scheduler lo invoca. "radar" o "autori" da soli eseguono solo la Fase 5 (autori e
+  temi core). NON pubblica mai niente: produce solo bozze e proposte.
 ---
 
 # Content Cockpit, report settimanale del lunedì
@@ -58,7 +55,9 @@ L'output sono bozze che Stefano edita.
    7 doppi e uno su un dato già scartato. Un angolo già proposto torna solo con un fatto nuovo, e lo dici.
    **Controlla anche se l'ultimo report era "parziale, fermato a Fase 5"** (vedi Fase 5): se sì, non
    ripartire da zero sulla watchlist. Riparti dagli autori/canali che quel report dichiarava non ancora
-   tentati, e tratta quelli già coperti come fatti per questa finestra.
+   tentati, e tratta quelli già coperti come fatti per questa finestra. Il punto di ripartenza esatto è il
+   registro di copertura di quel run (`claude-private-refs/linkedin/scan-esterno/copertura-AAAA-MM-GG.csv`):
+   le righe `da_leggere` sono quelle che restano. Vedi "Il registro di copertura" alla Fase 5.
 5. Determina la data del run e le finestre:
    - **Finestra matura**: post pubblicati tra 14 e 8 giorni fa. È quella che si misura.
    - **Finestra fresca**: ultimi 7 giorni. Si cita solo come anticipazione, mai per trarre conclusioni.
@@ -167,18 +166,50 @@ perché un log vuoto significa che il report sta misurando solo ciò che piace, 
 ## Fase 5: Gli autori della watchlist, ogni settimana
 
 Autori e temi stanno in `references/watchlist.md` di questa skill: si cambiano lì, non qui. Da
-2026-11-08 ogni autore si legge su **fino a quattro canali** quando li ha: LinkedIn, newsletter propria
-(Substack o altra), X/Twitter, Instagram (solo per chi lo usa come canale primario, es. Emily Segal/
-Nemesis). Non tutti gli autori hanno tutti e quattro: `watchlist.md` dichiara quali canali ha ciascuno.
-La finestra è quella autori della Fase 0 (di norma 7 giorni). Con "radar" o "autori" da soli, fuori dal
+2026-11-13 ogni autore si legge su **fino a cinque canali** quando li ha: LinkedIn, newsletter propria
+(Substack o altra), X/Twitter, YouTube, Instagram (solo per chi lo usa come canale primario, es. Emily
+Segal/Nemesis). Non tutti gli autori hanno tutti e cinque: `watchlist.md` dichiara quali canali ha ciascuno.
+La finestra è quella autori della Fase 0 (di norma 7 giorni). Con "autori" da solo, fuori dal
 lunedì, si esegue solo questa fase più la Lista B, e il report va comunque su Doc (Fase 10).
+
+### Il registro di copertura (da 2026-11-13)
+
+La copertura completa non è un'intenzione, è un file. Prima di leggere qualsiasi cosa, dalla cartella
+`System-content-flywheel` (su Windows `py -3`, altrove `python3`):
+
+1. `py -3 scripts/scan_esterno.py scan --dal AAAA-MM-GG` con l'inizio della finestra autori della Fase 0.
+   Costruisce `claude-private-refs/linkedin/scan-esterno/copertura-AAAA-MM-GG.csv`: **una riga per ogni
+   autore e canale che la watchlist dichiara e una per ogni tema core**. Legge da solo YouTube e le
+   newsletter che hanno un feed, chiude quelle righe e scrive i contenuti in `scan-esterno-AAAA-MM-GG.csv`
+   (per YouTube con visualizzazioni e rapporto con la mediana del canale). Alla fine stampa le righe che
+   restano `da_leggere`: sono il tuo lavoro.
+2. Leggi ogni riga aperta con il metodo del suo canale (sezioni sotto) e **chiudila subito**, non alla
+   fine: `py -3 scripts/scan_esterno.py segna --id <id> --esito contenuti|niente|non_raggiungibile --n <N>
+   --nota "cosa hai letto davvero, o perché non hai potuto"`. La nota è obbligatoria e finisce nel report:
+   "niente" senza dire cosa hai guardato non vale. Se la sessione si interrompe, il registro dice
+   esattamente dove.
+3. `py -3 scripts/scan_esterno.py verifica`. **Exit 0 = copertura completa: puoi passare alla Fase 6.
+   Exit 1 = ci sono righe aperte: non passare alla Fase 6**, applica la regola bloccante qui sotto.
+
+Regole del registro:
+
+- Un canale `non_raggiungibile` con motivo è un esito valido. Una riga aperta no.
+- Se `watchlist.md` cambia dopo lo scan, `verifica` fallisce (manca una riga): rilancia `scan --rifai`,
+  che rilegge i feed e conserva le righe già chiuse a mano.
+- Se riprendi un run un altro giorno, rilancia con `scan --oggi <data del lunedì del run> --rifai`: il
+  registro porta la data del run, non quella di oggi.
+- Le righe `PROPOSTA USCITA CANALE` che lo script stampa (canali fermi da otto settimane o più) vanno nel
+  report come **proposta**, stesso meccanismo del loop C della Fase 9. Un canale marcato `[tenuto]` in
+  `watchlist.md` non viene riproposto.
+- Un feed newsletter fermo da più di sei mesi non chiude la riga da solo: resta `da_leggere`, perché la
+  fonte potrebbe essere sbagliata e "niente di nuovo" sarebbe un falso negativo.
 
 ### Fase 5 è bloccante (da 2026-11-09)
 
 **Le Fasi 6 e 7 non partono finché Fase 5 non è completa.** Completa vuol dire: per ogni autore della
 tabella e per ogni canale che ha, uno di questi tre esiti è stato raggiunto — letto con contenuti nella
 finestra, letto e dichiarato "niente nella finestra", oppure dichiarato "canale non raggiungibile" con
-il motivo. Non è un esito valido fermarsi a metà tabella e scrivere il report come se fosse finita: è
+il motivo. Lo certifica `verifica` (exit 0), non la tua impressione di aver finito. Non è un esito valido fermarsi a metà tabella e scrivere il report come se fosse finita: è
 esattamente l'errore del run del 9/11 (4 autori su 16 letti, gli altri 12 mai nemmeno tentati, nessun
 avviso). Un autore saltato per tempo non è "niente da segnalare", è un blocco.
 
@@ -189,13 +220,14 @@ non c'è fallback — oppure il tempo/budget del run finisce a metà tabella):
 2. **Manda una notifica push** (tool `PushNotification`, se disponibile in sessione) con un messaggio
    specifico e azionabile: cosa è bloccato e cosa serve a Stefano per sbloccarlo. Esempi: "Cockpit
    fermo: Chrome non risponde, serve login LinkedIn per continuare gli autori" oppure "Cockpit fermo a
-   metà watchlist (9/16 autori letti), tempo esaurito: dimmi se continuare ora o lunedì prossimo". Se
+   metà watchlist (24 righe su 51 chiuse nel registro), tempo esaurito: dimmi se continuare ora o lunedì prossimo". Se
    `PushNotification` non è disponibile in quella sessione, scrivilo comunque in cima alla risposta in
    chat, non solo nel Doc di fine run.
 3. **Completa comunque le Fasi 0-4** (dataset, KPI, PostHog, conversioni) e consegna quel report
    parziale su Doc, intitolato chiaramente "parziale, fermato a Fase 5" in cima (sezione 1). KPI, mix
    dei contenuti e sito sono indipendenti dagli autori: non buttarli via solo perché Fase 5 è bloccata.
-4. **Dichiara nel report esattamente quali autori/canali restano da leggere**, nello stesso formato
+4. **Dichiara nel report esattamente quali autori/canali restano da leggere** (copia l'elenco che stampa
+   `verifica`: le nomina per id), nello stesso formato
    della regola di copertura sotto, così la Fase 5 successiva (rilanciata a mano o il lunedì dopo) parte
    da lì invece che da capo.
 
@@ -219,9 +251,22 @@ usa il tabId che restituisce. Chiudi i tab che apri. ToolSearch:
 
 Scrivi nel report quale canale hai usato per LinkedIn.
 
-### Canale: newsletter propria, X e Instagram
+### Canale: newsletter, YouTube, X e Instagram
 
-Nessun browser loggato per questi tre: **WebSearch e WebFetch** (ToolSearch se deferred). Per la
+**Newsletter con feed e YouTube li legge lo script** (comando `scan`): feed pubblici, nessun browser.
+Per le newsletter dà titolo, data e un estratto: se un post è il pezzo centrale della finestra aprilo e
+leggilo per intero con WebFetch. Le newsletter le leggi tu, tutte: se la riga è un profilo
+`substack.com/@nome`, aprilo, trova l'indirizzo della pubblicazione e prova `<indirizzo>/feed` con
+WebFetch prima di passare alla ricerca. **Se un pezzo è a pagamento** e hai solo l'anteprima, non
+costruirci sopra angoli e non riassumerlo come se l'avessi letto: chiudi la riga con una nota che lo
+dice, elenca titolo e link nel report (sezione "Cosa hanno scritto gli autori") e nella risposta in
+chat con la frase "Mi serve l'articolo intero di: ...". Stefano lo incolla e tu lo leggi da lì. Per
+YouTube dà titolo, data, visualizzazioni e il rapporto con la **mediana** del canale (mai la media: un
+video virale la falserebbe per mesi). Un video a 3 volte la mediana o più è "fuori scala" e va
+segnalato; sotto è rumore.
+
+Per le righe che lo script lascia aperte (newsletter senza feed o con feed fermo, X, Instagram) non c'è
+un browser loggato: **WebSearch e WebFetch** (ToolSearch se deferred). Per la
 newsletter, cerca l'ultimo numero pubblicato nella finestra e leggilo per intero se è il pezzo
 centrale, altrimenti il riassunto. Per X, la ricerca web indicizza male i singoli post: prova prima
 una ricerca diretta sul profilo, poi citazioni del post in articoli o thread terzi. Per Instagram è
@@ -253,24 +298,8 @@ come se la copertura fosse completa quando non lo è.
 
 Poi i **temi core** della watchlist: una ricerca per tema sugli ultimi 7-10 giorni (newsletter di
 settore, report con dati, dibattiti). Scarta quello che potrebbe interessare qualsiasi marketer: non è
-un segnale, è rumore.
-
-### Radar X: nuovi creator (ogni settimana)
-
-Oltre agli autori fissi della watchlist, cerca su X nuovi content creator su brand, SaaS, AI, GTM,
-positioning che Stefano non segue ancora — liste "who to follow", thread di settore, citazioni in
-newsletter terze. Non è la watchlist: non entra in `references/watchlist.md` da sola, è una sezione a
-parte del report (Fase 10) con **esattamente questa tabella**:
-
-| Creator | Post (titolo/estratto) | Insight | Perché dovrebbe importare a Stefano | Cosa potrebbe scriverci sopra | Link |
-|---|---|---|---|---|---|
-
-"Insight" è cosa dice di specifico il post, non un riassunto vago. "Perché dovrebbe importare"
-aggancia un pillar/sotto-argomento di `pov.md` quando possibile (es. A1, B2, D4), o dichiara un altro
-motivo (tattica nuova, contro-esempio, trend) se non si aggancia a nessuno. Mai inventare un link.
-
-Se un creator trovato qui torna per 2-3 settimane con segnale buono, **proponilo** per l'ingresso nella
-watchlist vera (stesso meccanismo del loop C in Fase 9): non lo aggiungi da solo.
+un segnale, è rumore. Ogni tema è una riga del registro (`tema-...`): chiudila con `segna` appena
+finita la ricerca.
 
 ### Il filtro
 
@@ -515,9 +544,8 @@ in `scelte.csv`, e `cosa-funziona.md` lo riassume per lista, fonte, pillar e cat
 - **Nel report**: una riga su cosa dicono le scelte finora, con il numero di settimane su cui si regge.
   Prima di quattro settimane di dati, scrivi solo i conteggi, senza trarne una tendenza.
 - **Watchlist**: un autore con almeno sei voci proposte e nessuna scelta in otto settimane, oppure senza
-  segnale utile per otto settimane, va **proposto** per l'uscita, con i numeri. Proponi anche chi
-  entrerebbe, se negli stessi report un nome fuori lista è tornato più volte. Non modificare la watchlist
-  da solo: chi legge Stefano lo decide lui.
+  segnale utile per otto settimane, va **proposto** per l'uscita, con i numeri. Chi entra e chi esce lo
+  decide Stefano a mano: non proporre ingressi e non modificare la watchlist da solo.
 - **Quando i numeri e le scelte divergono**, dillo. Se Stefano sceglie sempre un pillar che poi fa
   sotto la mediana, o scarta sempre quello che va meglio, non è una cosa da correggere in silenzio: è
   una decisione sua, tra quello che vuole dire e quello che funziona.
@@ -545,7 +573,9 @@ rilegge le previsioni dei report vecchi e i Doc non stanno nel repo.
 Struttura, in quest'ordine, perché l'ordine è il messaggio:
 
 1. **Una riga di verdetto**: la cosa che Stefano deve sapere se legge solo la prima riga
-2. **Stato dei dati**: cosa è fresco, cosa è degradato, cosa manca, e quale canale ha letto gli autori
+2. **Stato dei dati**: cosa è fresco, cosa è degradato, cosa manca, e quale canale ha letto gli autori;
+   l'esito del registro di copertura (righe chiuse su righe dovute, le non raggiungibili con motivo, le
+   proposte di uscita canale)
 3. **KPI della finestra matura** + il migliore + trend, da `cosa-funziona.md`
 4. **Il mix dei contenuti: reale vs target**. Dalla dimensione "Categoria mix" di `cosa-funziona.md`
    (finestra rolling 8-12 settimane, mai la singola settimana), confrontata con i target di
@@ -556,18 +586,17 @@ Struttura, in quest'ordine, perché l'ordine è il messaggio:
 7. **Cosa ho imparato**: dalle tue correzioni (loop A), dalle previsioni (loop B), dalle tue scelte
    (loop C, incluso l'asse mix), e quali verdetti di `cosa-funziona.md` sono cambiati
 8. **Il contesto della settimana**, in breve: cosa è uscito dalle call e quali temi sono saturi
-9. **Cosa hanno scritto gli autori**: per autore, i canali letti (LinkedIn/newsletter/X), i temi della
+9. **Cosa hanno scritto gli autori**: per autore, i canali letti (LinkedIn/newsletter/X/YouTube/Instagram), i temi della
    finestra e il contenuto più notevole con il perché, oppure "niente nella finestra" per canale. Poi i
-   segnali dai temi core, con la fonte.
-10. **Radar X: nuovi creator**, la tabella di Fase 5 (Creator, Post, Insight, Perché, Cosa scriverci,
-    Link), oppure "nessun candidato solido questa settimana" se non c'è niente sopra la soglia.
-11. **Le tre liste** (5 notizie tech, fino a 5 angoli dagli autori, fino a 3 candidati Build in
+   segnali dai temi core, con la fonte. In coda, gli articoli a pagamento letti solo in anteprima
+   (titolo e link), che Stefano può incollare per intero.
+10. **Le tre liste** (5 notizie tech, fino a 5 angoli dagli autori, fino a 3 candidati Build in
     Public/Personal Brand/Offer), con i due che svilupperesti, poi stop
-12. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
-13. **Segnali per la knowledge**: solo candidati, nessun file modificato. Formato "CANDIDATO: [cosa] →
+11. **L'esperimento della settimana**: una sola ipotesi falsificabile da testare, con come si misura
+12. **Segnali per la knowledge**: solo candidati, nessun file modificato. Formato "CANDIDATO: [cosa] →
     [dove andrebbe] → [perché]". Decide Stefano.
 
-Poi committa e pusha `claude-private-refs` (dataset, report, bozze, `scelte.csv`, `cosa-funziona.*`): è
+Poi committa e pusha `claude-private-refs` (dataset, report, bozze, `scelte.csv`, `cosa-funziona.*`, `scan-esterno/`): è
 privato, ed è la copia che permette di ripartire da un altro computer. In `System-content-flywheel`
 committa e pusha gli aggiornamenti di knowledge solo dopo aver controllato che nel diff e nel messaggio
 di commit non ci siano nomi di clienti, di persone o loro identificativi.
@@ -604,6 +633,7 @@ sola, fuori da questa routine.
 |---|---|---|
 | `linkedin-viral-post-writer` | **Autorità sulla voce e sulla struttura dei post.** Scritta da Stefano, vive di vita propria, si usa anche da sola per un post singolo in qualsiasi momento | Fase 8, per scrivere i pezzi scelti |
 | `references/watchlist.md` | Autori e temi da leggere | Fase 5 |
+| `System-content-flywheel/scripts/scan_esterno.py` | Registro di copertura della Fase 5 e lettura dei feed YouTube/newsletter | Fase 5 (`scan`, `segna`, `verifica`) |
 | `claude-private-refs/linkedin/cosa_funziona.py` | Ricalcolo settimanale di cosa funziona su tutto lo storico | Fase 1, poi letto in Fasi 2, 7 e 9 |
 | `knowledge/foundation/content-strategy.md` §2bis | Vocabolario vincolato delle 5 categorie mix e i loro target % | Fase 1 (tagging), Fase 6 (dichiarazione per voce), Fase 10 (sezione mix) |
 
