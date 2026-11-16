@@ -79,22 +79,40 @@ misurazione, non per merito.
    già e conserva i più vecchi, che lo snapshot non mostra più. Stampa quanti ne ha aggiunti,
    aggiornati e conservati: se il totale è più basso di prima, fermati, è un errore.
    Python: `py -3`, e se manca `python`.
-4. **Tagga i post nuovi in `temi.csv`**: una riga per ogni `activity_id` che c'è in `metrics.csv` e non lì,
+4. **Leggi i commenti** dei post pubblicati negli ultimi 21 giorni (finestra matura più fresca). Lo
+   snapshot non li contiene: senza questo passo i post nuovi restano a 0 commenti e ogni ER è
+   sottostimato. Per ogni post, nella stessa scheda **in primo piano** (in background la pagina si
+   carica a metà e conta 0):
+   - `navigate_page` su `https://www.linkedin.com/feed/update/urn:li:activity:<ID>/` (va in timeout
+     dopo pochi secondi ma la pagina si carica lo stesso);
+   - `evaluate_script` con `function` = il contenuto intero di
+     `System-content-flywheel/scripts/linkedin_commenti.js` e `filePath` =
+     `<scratchpad>/commenti/<ID>.json`. Il nome del file deve essere l'ID del post: è il controllo che
+     la pagina fosse già cambiata.
+
+   Poi `py -3 claude-private-refs/linkedin/aggiorna_commenti.py <scratchpad>/commenti`. Aggiorna
+   commenti ed ER in `metrics.csv` e `posts-full.md`, e scrive autore e testo di ogni commento in
+   `commenti.csv` (privato: nei report entrano ruolo e settore, mai il nome). Se un post esce
+   `SCARTATO` (pagina non ancora cambiata, non caricata, commenti ancora nascosti) rileggilo; se resta
+   scartato, dichiaralo nel report. Exit 1 vuol dire che almeno un post non è stato aggiornato.
+   Nel report, quando citi i commenti, separa quelli degli altri dalle tue risposte: il conteggio di
+   LinkedIn, e quindi l'ER, le include.
+5. **Tagga i post nuovi in `temi.csv`**: una riga per ogni `activity_id` che c'è in `metrics.csv` e non lì,
    con fino a tre tag, il formato retorico e la **categoria mix**. Per tag e formato retorico usa solo
    quelli definiti nelle sezioni 1 e 2 di `voce-analisi.md`; per la categoria mix usa solo le 5 di
    `content-strategy.md` §2bis (Educational, Thought Leadership, Personal Brand, Build in Public, Offer).
    Se un post non ci sta bene in nessuna, scegli la più vicina e segnalalo nel report invece di inventarne
    una sesta. Un post fuori dalla tua rete (How Small Brands Grow, un'altra testata) o cancellato va anche
    in `esclusi.csv`, con il motivo.
-5. **Aggiorna `scelte.csv`**:
+6. **Aggiorna `scelte.csv`**:
    - le voci del report precedente con `scelta` ancora vuota diventano `si` se Stefano le ha fatte
      sviluppare (c'è una bozza in `bozze.md` o in `post-idee/` che le cita) e `no` altrimenti;
    - se un post appena entrato in `metrics.csv` è nato da una voce scelta, scrivi il suo `activity_id`
      su quella riga. Abbinalo per tema e testo, non per data: se non sei sicuro, lascia vuoto e dillo.
-6. Lancia `claude-private-refs/linkedin/cosa_funziona.py`. Ricalcola su **tutto** lo storico maturo, con
+7. Lancia `claude-private-refs/linkedin/cosa_funziona.py`. Ricalcola su **tutto** lo storico maturo, con
    intervalli di confidenza, quali formati, formati retorici e temi stanno sopra o sotto la tua mediana, e
    cosa è cambiato dal lunedì precedente. Scrive `cosa-funziona.md`, che è la base storica di tutto il
-   report. Se nel suo output compare "post maturi senza riga in temi.csv", torna al punto 4.
+   report. Se nel suo output compare "post maturi senza riga in temi.csv", torna al punto 5.
 
 **Perché uno script e non una lettura a occhio:** su una mediana di ~275 impressioni una settimana sola
 non dice quasi mai niente. Lo storico intero sì, ma solo se ogni lunedì si rifà lo stesso conto nello
@@ -254,6 +272,14 @@ Scrivi nel report quale canale hai usato per LinkedIn.
 ### Canale: newsletter, YouTube, X e Instagram
 
 **Newsletter con feed e YouTube li legge lo script** (comando `scan`): feed pubblici, nessun browser.
+Il feed RSS di YouTube a volte risponde 404 per ore (16/11/2026: tutti e cinque i canali al mattino,
+di nuovo attivi due ore dopo). Lo script riprova, e se il feed resta giù legge da solo la pagina del
+canale, schede Video e Short, con le date esatte dalla pagina del singolo video. La nota della riga
+lo dice ("FEED RSS ROTTO ..., letto dalla pagina canale"): feed rotto non vuol dire canale fermo.
+Se fallisce anche la pagina canale la riga è `non_raggiungibile`; se allora la leggi a mano da Chrome,
+**guarda anche la scheda Short**: la scheda Video non li mostra (il 16/11 sono saltati così tre video
+di Bina, uno a 41 volte la mediana). Gli Short hanno il titolo che inizia con `[Short]` e si
+confrontano con la mediana degli Short del canale, i video lunghi con quella dei video lunghi.
 Per le newsletter dà titolo, data e un estratto: se un post è il pezzo centrale della finestra aprilo e
 leggilo per intero con WebFetch. Le newsletter le leggi tu, tutte: se la riga è un profilo
 `substack.com/@nome`, aprilo, trova l'indirizzo della pubblicazione e prova `<indirizzo>/feed` con
@@ -633,6 +659,7 @@ sola, fuori da questa routine.
 |---|---|---|
 | `linkedin-viral-post-writer` | **Autorità sulla voce e sulla struttura dei post.** Scritta da Stefano, vive di vita propria, si usa anche da sola per un post singolo in qualsiasi momento | Fase 8, per scrivere i pezzi scelti |
 | `references/watchlist.md` | Autori e temi da leggere | Fase 5 |
+| `System-content-flywheel/scripts/linkedin_commenti.js` + `claude-private-refs/linkedin/aggiorna_commenti.py` | Lettura dei commenti di ogni post dalla pagina del post, e loro ingresso in `metrics.csv` e `commenti.csv` | Fase 1, punto 4 |
 | `System-content-flywheel/scripts/scan_esterno.py` | Registro di copertura della Fase 5 e lettura dei feed YouTube/newsletter | Fase 5 (`scan`, `segna`, `verifica`) |
 | `claude-private-refs/linkedin/cosa_funziona.py` | Ricalcolo settimanale di cosa funziona su tutto lo storico | Fase 1, poi letto in Fasi 2, 7 e 9 |
 | `knowledge/foundation/content-strategy.md` §2bis | Vocabolario vincolato delle 5 categorie mix e i loro target % | Fase 1 (tagging), Fase 6 (dichiarazione per voce), Fase 10 (sezione mix) |
