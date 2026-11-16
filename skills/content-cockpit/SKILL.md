@@ -400,8 +400,13 @@ Guarda in quest'ordine.
    esplicitamente cosa è successo *davvero* questa settimana nel lavoro di Stefano: un commit o una
    decisione nel sistema di content flywheel stesso, l'iterazione di un metodo, una call che ha chiuso
    bene un caso cliente. Stessa anonimizzazione obbligatoria di sopra. Filtro più leggero di quello
-   di Lista A/B: non serve agganciare un pillar di `pov.md` per forza — dichiaralo quando c'è, lascialo
+   di Lista A/B: non serve agganciare un pillar di `pov.md` per forza: dichiaralo quando c'è, lascialo
    vuoto quando non c'è senza scartare il candidato solo per questo.
+
+   **I post sul suo processo (il sistema di content, le skill, il cockpit stesso) entrano nella Lista C
+   solo con un dato forte**: un numero vero e nuovo che regge il post da solo (es. "5 visite al sito in
+   14 giorni su 6.250 impressioni"). Il racconto del processo in sé, senza un dato del genere, non si
+   propone. Deciso da Stefano il 2026-11-16, dopo tre proposte di processo scartate.
 2. **Il mercato.** Quello che hai letto alla Fase 5: autori della watchlist e temi core.
 3. **L'archivio.** Post sopra la mediana pubblicati più di sei mesi fa, da aggiornare; oppure tre-cinque
    post sullo stesso tema da fondere in un pezzo unico. Materiale già validato dai numeri, che nessuno
