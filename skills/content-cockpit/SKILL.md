@@ -57,7 +57,7 @@ L'output sono bozze che Stefano edita.
    ripartire da zero sulla watchlist. Riparti dagli autori/canali che quel report dichiarava non ancora
    tentati, e tratta quelli già coperti come fatti per questa finestra. Il punto di ripartenza esatto è il
    registro di copertura di quel run (`claude-private-refs/linkedin/scan-esterno/copertura-AAAA-MM-GG.csv`):
-   le righe `da_leggere` sono quelle che restano. Vedi "Il registro di copertura" alla Fase 5.
+   le righe `da_leggere` e `da_riprovare` sono quelle che restano. Vedi "Il registro di copertura" alla Fase 5.
 5. Determina la data del run e le finestre:
    - **Finestra matura**: post pubblicati tra 14 e 8 giorni fa. È quella che si misura.
    - **Finestra fresca**: ultimi 7 giorni. Si cita solo come anticipazione, mai per trarre conclusioni.
@@ -206,12 +206,29 @@ La copertura completa non è un'intenzione, è un file. Prima di leggere qualsia
    --nota "cosa hai letto davvero, o perché non hai potuto"`. La nota è obbligatoria e finisce nel report:
    "niente" senza dire cosa hai guardato non vale. Se la sessione si interrompe, il registro dice
    esattamente dove.
-3. `py -3 scripts/scan_esterno.py verifica`. **Exit 0 = copertura completa: puoi passare alla Fase 6.
-   Exit 1 = ci sono righe aperte: non passare alla Fase 6**, applica la regola bloccante qui sotto.
+3. **Torna sui canali che non hanno risposto, a fine lettura.** Un canale che dà 404, va in timeout o
+   non si riesce a leggere **non si abbandona**: resta aperto come `da_riprovare`. Quando hai finito
+   tutte le altre righe:
+   - `py -3 scripts/scan_esterno.py riprova --dal AAAA-MM-GG` (stesso `--dal` dello scan) rilegge con
+     lo script YouTube e newsletter ancora giù;
+   - quelle che restano giù le provi a mano, con un metodo diverso da quello che è fallito (Chrome,
+     WebFetch, ricerca, la scheda Short su YouTube). Se riesci, `segna` con l'esito vero; se fallisci,
+     `segna --esito non_raggiungibile` registra il tentativo ma **non chiude la riga** finché non bastano;
+   - ripeti il giro finché la riga non è chiusa.
+
+   Una riga si chiude come non raggiungibile solo dopo 3 tentativi falliti, distanti almeno 10 minuti
+   l'uno dall'altro, di cui almeno uno a mano. Lo script rifiuta un tentativo troppo vicino al
+   precedente (non conta come tornarci) e `verifica` rifiuta una riga chiusa troppo presto. Il limite
+   esiste perché un sito giù per un giorno intero non deve bloccare il report del lunedì per sempre:
+   le soglie sono `MIN_TENTATIVI` e `GAP_TENTATIVI_MIN` in cima allo script.
+4. `py -3 scripts/scan_esterno.py verifica`. **Exit 0 = copertura completa: puoi passare alla Fase 6.
+   Exit 1 = ci sono righe aperte o da riprovare: non passare alla Fase 6**, torna al punto 3; se il
+   tempo del run finisce prima, applica la regola bloccante qui sotto.
 
 Regole del registro:
 
-- Un canale `non_raggiungibile` con motivo è un esito valido. Una riga aperta no.
+- Un canale `non_raggiungibile` è un esito valido solo dopo i tentativi del punto 3, con il motivo
+  di ognuno nella nota. Una riga aperta o da riprovare no.
 - Se `watchlist.md` cambia dopo lo scan, `verifica` fallisce (manca una riga): rilancia `scan --rifai`,
   che rilegge i feed e conserva le righe già chiuse a mano.
 - Se riprendi un run un altro giorno, rilancia con `scan --oggi <data del lunedì del run> --rifai`: il
