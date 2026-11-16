@@ -304,20 +304,24 @@ WebFetch prima di passare alla ricerca. **Se un pezzo è a pagamento** e hai sol
 costruirci sopra angoli e non riassumerlo come se l'avessi letto: chiudi la riga con una nota che lo
 dice, elenca titolo e link nel report (sezione "Cosa hanno scritto gli autori") e nella risposta in
 chat con la frase "Mi serve l'articolo intero di: ...". Stefano lo incolla e tu lo leggi da lì. Per
-YouTube dà titolo, data, visualizzazioni e il rapporto con la **mediana** del canale (mai la media: un
-video virale la falserebbe per mesi). Un video a 3 volte la mediana o più è "fuori scala" e va
-segnalato; sotto è rumore.
+YouTube dà titolo, data, visualizzazioni e il rapporto con la **mediana** del canale per lo stesso
+formato, Short con Short e video lunghi con video lunghi (mai la media: un video virale la falserebbe
+per mesi). Un video a 3 volte la mediana o più è "fuori scala" e va segnalato; sotto è rumore.
 
-Per le righe che lo script lascia aperte (newsletter senza feed o con feed fermo, X, Instagram) non c'è
-un browser loggato: **WebSearch e WebFetch** (ToolSearch se deferred). Per la
-newsletter, cerca l'ultimo numero pubblicato nella finestra e leggilo per intero se è il pezzo
+**X e Instagram si leggono dal Chrome loggato** (verificato il 16/11/2026, `chrome-devtools-mcp`): per X
+apri `x.com/<handle>` e leggi gli `article` con la data dall'elemento `time`; i post si caricano a
+gruppi, quindi se vedi solo quello fissato aspetta e rileggi. Per Instagram apri il profilo e leggi
+la griglia: le didascalie si vedono, le date no, e va scritto nella nota. Solo se Chrome non risponde
+si passa a **WebSearch e WebFetch** (ToolSearch se deferred), con il limite che la ricerca web
+indicizza male i singoli post. Per la newsletter senza feed, cerca l'ultimo numero pubblicato nella finestra e leggilo per intero se è il pezzo
 centrale, altrimenti il riassunto. Per X, la ricerca web indicizza male i singoli post: prova prima
 una ricerca diretta sul profilo, poi citazioni del post in articoli o thread terzi. Per Instagram è
 anche peggio: spesso non recuperi nulla oltre la bio pubblica e qualche didascalia indicizzata, e il
 sito ufficiale dell'autore (quando esiste) è spesso la fonte migliore per trovare caption o temi
 recenti citati altrove. Quando non riesci a recuperare nulla di verificabile, dichiaralo invece di
 riempire con un riassunto plausibile ma non letto. Stessa regola di LinkedIn: un canale assente per un
-autore in una settimana non ferma il run — è un dato, non un blocco. **Il blocco (sopra) è un'altra
+autore in una settimana non ferma il run: è un dato, non un blocco. Un canale che non risponde è
+un'altra cosa ancora: si riprova a fine Fase 5, vedi il registro di copertura. **Il blocco (sopra) è un'altra
 cosa**: scatta solo quando l'intera Fase 5 non riesce a passare per tutta la tabella, non quando un
 singolo canale di un singolo autore non dà risultati.
 
@@ -330,7 +334,8 @@ il tempo di lettura solo perché un autore è su tre piattaforme, scarta subito 
 - Salta i repost senza commento, i "commenta per ricevere" e i post solo promozionali.
 - Se un autore non ha pubblicato su un canale nella finestra, scrivilo e passa oltre. Dunford è rimasta
   senza post in 6 cicli su 8: è normale, non va riempito.
-- Se un profilo non carica, annotalo e vai avanti.
+- Se un profilo non carica, vai avanti con gli altri ma **non abbandonarlo**: segna il tentativo e
+  tornaci a fine Fase 5 (punto 3 del registro di copertura).
 
 **Copertura obbligatoria.** La watchlist può crescere; il tempo per leggerla no. Un autore mai
 controllato e un autore senza post nella finestra sono due informazioni diverse: la prima dice "non
