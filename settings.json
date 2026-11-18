@@ -114,8 +114,9 @@
     "last30days-skill": {
       "source": {
         "source": "github",
-        "repo": "stefanomartiradonna/last30days-skill"
-      }
+        "repo": "mvanhorn/last30days-skill"
+      },
+      "autoUpdate": true
     }
   }
 }
