@@ -4,7 +4,7 @@ description: Produce analisi giornalistiche long-form di aziende reali (startup,
 license: MIT
 metadata:
   author: Stefano Martiradonna
-  version: 1.0.0
+  version: 1.3.0
 ---
 
 # Company Teardown
@@ -15,7 +15,7 @@ Skill per la rubrica "Company Teardown" della newsletter "da 0 al PMF". Produce 
 
 Non è un case study per outreach (usa `case-study-creator`). Non è un'analisi strategica in astratto (usa `strategic-advisor`). Non è un'analisi del vettore di crescita di un brand consumer (usa `how-small-brands-growth`). È un pezzo editoriale lungo-form costruito su ricerca verificata, con una narrativa ad atti cronologici e un angolo editoriale dichiarato.
 
-**Prima di procedere:** leggi tutti i file in `references/`.
+**Prima di procedere:** leggi tutti i file in `references/`, comprese le schede in `references/examples/`. Le schede servono a capire quale formato proporre. I testi integrali degli articoli di riferimento si leggono dopo la Fase 2, quando il formato è deciso (vedi Fase 2bis).
 
 ---
 
@@ -25,15 +25,14 @@ Non è un case study per outreach (usa `case-study-creator`). Non è un'analisi 
 
 1. Leggi tutto il materiale condiviso dall'utente (articoli, note, appunti, dati grezzi, link)
 2. Identifica i claim che richiedono verifica attiva: round di funding, date chiave, revenue dichiarate, milestones di prodotto, composizione del team fondatore, acquisizioni
-3. Esegui ricerche attive con stack progressivo:
-   - **WebSearch + WebFetch**: fonti primarie (sito ufficiale, blog, comunicati stampa, articoli di stampa)
-   - **Apify actors** se WebSearch non è sufficiente: cerca actor per Crunchbase, LinkedIn company pages, SimilarWeb, PitchBook, G2 — per dati strutturati che non emergono da ricerca semplice
-4. Per ogni claim critico, classifica:
+3. Lancia la ricerca con **cinque agenti in parallelo**, uno per corsia: storia e funding, numeri, clienti, GTM, prodotto e motore di crescita. Le cinque chiamate Agent partono nello stesso messaggio, con `subagent_type: general-purpose` e `model: sonnet`. Brief comune, corsie e formato di ritorno sono in `references/research-lanes.md`. Se lo strumento Agent non è disponibile, esegui le corsie in sequenza con lo stesso brief.
+4. Unisci i risultati seguendo la sezione "Sintesi" di `references/research-lanes.md`: una tabella sola, le contraddizioni tra corsie segnate ❌, i buchi critici rilanciati a un agente mirato.
+5. Per ogni claim critico, classifica:
    - ✅ Verificato con fonte citata
    - ⚠️ Non verificabile pubblicamente — segnalato, andrà dichiarato nel testo
    - ❌ Contraddice le fonti trovate — richiede chiarimento dall'utente
-5. Mostra la tabella di verifica all'utente
-6. Se ci sono ❌ chiedi all'utente di risolvere prima di procedere
+6. Mostra la tabella di verifica all'utente
+7. Se ci sono ❌ chiedi all'utente di risolvere prima di procedere
 
 Consulta `references/verification-checklist.md` per i dettagli su cosa verificare per ogni categoria di dato.
 
@@ -54,6 +53,27 @@ Fai massimo 5 domande, divise in tre blocchi:
 - Includi l'analisi dei numeri (revenue, EBITDA, gross margin, unit economics, scenari)?
 - Se sì: quali metriche e con che profondità?
 
+Chiudi la Fase 2 dichiarando il formato che esce dalle risposte: investigativo ad atti, tematico o playbook.
+
+### Fase 2bis: leggi per intero gli articoli di riferimento (obbligatorio)
+
+Prima di proporre l'outline:
+
+1. `git pull` nel repo privato `claude-private-refs` (clone locale accanto a `System-content-flywheel`, `~/Documents/claude-private-refs`).
+2. Scegli gli articoli dalla tabella qui sotto, in base al formato e ai moduli decisi in Fase 2.
+3. **Leggi per intero ogni articolo scelto**, dall'inizio alla fine, senza limiti di righe. La lettura la fai tu, non un subagente: serve a chi scrive, e un riassunto non basta. Le schede in `references/examples/` orientano, non sostituiscono il testo.
+4. Se il repo non è raggiungibile, dillo in una riga e fermati. Non si scrive un teardown sul modello di Michelon senza aver letto Michelon.
+5. Apri l'outline dicendo quali articoli hai letto: titolo, autore, data.
+
+| Formato | Leggi sempre (in `claude-private-refs/`) | In aggiunta se |
+|---|---|---|
+| Investigativo ad atti (default, anche senza finanza o con focus 0→PMF) | `company-teardown/satispay-michelon.md` | leve o flywheel inclusi: `company-teardown/weroad-mastella.md` |
+| Tematico (azienda consolidata, conta lo stato attuale più della storia) | `company-teardown/teamsystem-michelon.md` | leve o flywheel inclusi: `company-teardown/weroad-mastella.md` |
+| Playbook (educational breakdown) | `company-teardown/weroad-mastella.md`, più l'estratto Atlassian/Hermann in `references/examples/atlassian-hermann.md` (il testo integrale non è nel sistema) | sezione "Facciamo i conti" inclusa: `company-teardown/satispay-michelon.md` |
+| Qualsiasi formato | (si aggiunge agli articoli della riga del formato) | analisi dei numeri inclusa in Fase 2: `company-teardown/startup-italiane-2026-albanese.md`, il modello per gli indicatori calcolati sui dati pubblici (ricavo per cliente nel tempo, clienti e ricavi per persona, valutazione implicita, ritmo mensile proiettato, moltiplicatore chiesto dal target) |
+
+Se in Fase 3 l'utente cambia formato, leggi gli articoli del nuovo formato prima di rifare l'outline.
+
 ### Fase 3 — Outline
 
 Proponi la struttura basata sulle risposte della Fase 2. Struttura default:
@@ -73,12 +93,13 @@ Consulta `references/structure.md` per le specifiche di ogni sezione.
 
 ### Fase 4 — Draft completo
 
-1. Segui le linee guida in `references/narrative-guide.md`
-2. Rispetta lo stile in `~/.claude/skills/newsletter-writer/references/style-guide.md`
-3. Lunghezza target: 3500–5000 parole
-4. Segna i dati incerti con `[DA VERIFICARE]` nel testo
-5. Dati finanziari: sempre con fonte inline es. "secondo il bilancio 2023 depositato al MISE" o "come dichiarato dal CEO in un'intervista a Il Sole 24 Ore"
-6. Salva il file in `articoli/Company-Teardown-[NomeAzienda]-[Anno].md` nel progetto System-content-flywheel
+1. Scrivi con davanti i testi letti in Fase 2bis: struttura, ritmo, passaggi tra un atto e l'altro e gestione dei dati incerti si prendono da lì, i contenuti no. Se non sono più nel contesto (sessione lunga), rileggili per intero prima di scrivere.
+2. Segui le linee guida in `references/narrative-guide.md`
+3. Rispetta lo stile in `~/.claude/skills/newsletter-writer/references/style-guide.md`
+4. Lunghezza target: 3500–5000 parole
+5. Segna i dati incerti con `[DA VERIFICARE]` nel testo
+6. Dati finanziari: sempre con fonte inline es. "secondo il bilancio 2023 depositato al MISE" o "come dichiarato dal CEO in un'intervista a Il Sole 24 Ore"
+7. Salva il file in `articoli/Company-Teardown-[NomeAzienda]-[Anno].md` nel progetto System-content-flywheel
 
 ### Fase 5 — Revisione editoriale
 
@@ -97,11 +118,12 @@ Consulta `references/structure.md` per le specifiche di ogni sezione.
 **User says:** "fai il teardown di Satispay per la mia newsletter"
 
 **Actions:**
-1. Fase 1 — Verifica: WebSearch su round di funding, bilanci, date lancio, fondatori → tabella ✅/⚠️/❌
-2. Fase 2 — Domande: arco temporale? (full arc), POV? (neutro investigativo), finanza? (sì, con scenari)
-3. Fase 3 — Outline: 7 atti cronologici (2013–2026) + sezione "Facciamo i conti" + closing synthesis
-4. Fase 4 — Draft: ~4500 parole, salvato in `articoli/Company-Teardown-Satispay-2026-05.md`
-5. Fase 5 — Revisione: 4 titoli alternativi + analisi strutturale
+1. Fase 1 — Verifica: cinque agenti in parallelo (storia e funding, numeri, clienti, GTM, crescita), sintesi in un'unica tabella ✅/⚠️/❌
+2. Fase 2 — Domande: arco temporale? (full arc), POV? (neutro investigativo), finanza? (sì, con scenari). Formato: investigativo ad atti
+3. Fase 2bis: `git pull` e lettura integrale di Satispay/Michelon e Startup italiane 2026/Albanese (c'è l'analisi dei numeri), più WeRoad/Mastella se entrano le leve
+4. Fase 3 — Outline: si apre con gli articoli letti, poi 7 atti cronologici (2013–2026) + sezione "Facciamo i conti" + closing synthesis
+5. Fase 4 — Draft: ~4500 parole, salvato in `articoli/Company-Teardown-Satispay-2026-05.md`
+6. Fase 5 — Revisione: 4 titoli alternativi + analisi strutturale
 
 **Result:** Articolo completo, verificato, con sezione finanziaria e verdict finale
 
