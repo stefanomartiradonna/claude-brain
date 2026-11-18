@@ -146,6 +146,7 @@ Le skills sono in `~/.claude/skills/`. Ogni SKILL.md porta con sé la propria de
 - **brand-culture-b2c-analyst**: analisi di brand, campagne e trend B2C (Andjelic, Bina). Seconda modalità "Lettura del presente e narrazione": trova segnali, anticipa comportamenti, costruisce narrazioni. Legge per intero gli articoli di Bina dal repo privato `claude-private-refs/brand-culture-bina/` prima di rispondere
 - **segal-cultural-forecasting**: lettura del presente alla Emily Segal (K-HOLE, Nemesis): sintomo e gerarchia che trema, pattern trasversale, tetrad, matrice 2x2, neologismo e come verrà frainteso, linea di commoditizzazione. Fonti lette online. Catena: brand-culture-b2c-analyst (modalità B) → questa, con due output separati; fusione Bina × Segal su richiesta
 - **how-small-brands-growth**: crescita di brand challenger consumer (Kinner, Pauwels) e pezzi della rubrica HSBG
+- **last30days** (plugin, `/last30days <tema>`): cosa dice la gente di un tema negli ultimi 30 giorni su Reddit, X, YouTube, Hacker News, Polymarket, GitHub e web, con modalità competitor e trending. Di Matt Van Horn (MIT), installato dal fork `stefanomartiradonna/last30days-skill` e dichiarato in `settings.json`, quindi arriva su ogni macchina che clona questo repo. Per aggiornarlo: `gh repo sync stefanomartiradonna/last30days-skill`, poi `claude plugin marketplace update last30days-skill`
 
 ### Positioning e messaging
 - **b2b-positioning-diagnostic**: positioning con Dunford 5-step, per diagnosi approfondite

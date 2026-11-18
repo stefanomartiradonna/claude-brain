@@ -32,7 +32,8 @@
     ]
   },
   "enabledPlugins": {
-    "parallel@parallel-agent-skills": true
+    "parallel@parallel-agent-skills": true,
+    "last30days@last30days-skill": true
   },
   "sandbox": {
     "network": {
@@ -108,5 +109,13 @@
     "pm-toolkit-grammar-check": "off",
     "pm-toolkit-privacy-policy": "off",
     "pm-toolkit-review-resume": "off"
+  },
+  "extraKnownMarketplaces": {
+    "last30days-skill": {
+      "source": {
+        "source": "github",
+        "repo": "stefanomartiradonna/last30days-skill"
+      }
+    }
   }
 }
